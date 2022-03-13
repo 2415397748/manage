@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<title>123</title>
+		<script src="vue.js"></script>
+		<script src="jquery-3.6.0.min.js"></script>
+		<script src="bootstrap/js/bootstrap.min.js"></script>
+		<script type="module">
+			import Vue from 'https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.esm.browser.js'
+		</script>
+		<link href="bootstrap/css/bootstrap.min.css" />
+	</head>
+	<body>
+		<div id="app">
+			<p>点击我消失</p>
+			<h1>{{msg}}</h1>
+			<button-counter></button-counter>
+			<button-counter></button-counter>
+			<button-counter></button-counter>
+			<blog-post v-for="post in posts" :key="post.id" :post="post"></blog-post>
+			<h1 @click="msg++">Hello, world!</h1>
+		</div>
+
+
+
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$("p").click(function() {
+					$(this).hide();
+					console.log("消失了")
+				});
+			});
+			Vue.component('button-counter', {
+				data: function() {
+		 		return {
+						count: 0
+					}
+				},
+				template: '<button v-on:click="count++">You clicked me {{ count }} times.</button>'
+			})
+			Vue.component('blog-post', {
+				props: ['post'],
+				template: `
+		        <div class="blog-post">
+		          <h3>{{ post.title }}</h3>
+		          <div v-html="post.content"></div>
+		        </div>
+		      `
+			})
+			var vm = new Vue({
+				el: '#app',
+				data: {
+					msg: 18,
+					posts: [{
+							id: 1,
+							title: 'My journey with Vue1'
+						},
+						{
+							id: 2,
+							title: 'Blogging with Vue2'
+						},
+						{
+							id: 3,
+							title: 'Why Vue is so fun3'
+						}
+					]
+				},
+				methods:{
+					
+				},
+				beforeCreate(){
+					console.log("创建之前的钩子")
+				},
+				created(){
+					console.log("创建完毕")
+				},
+				beforeMount(){
+					console.log("挂载之前")
+				},
+				mounted(){
+					console.log("挂载完毕")
+				},
+				beforeUpdate(){
+					console.log("更新数据之前")
+				},
+				
+				updated(){
+					console.log("更新完数据")
+				},
+				
+				beforeDestroy(){
+					console.log("销毁之前")
+				},
+				
+				destroyed(){
+					console.log("销毁")
+				},
+			})
+		</script>
+	</body>
+</html>
