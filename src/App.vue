@@ -12,10 +12,12 @@
 <style>
 	html,
 	body {
+		width: 100%;
 		height: 100%;
 		box-sizing: border-box;
 	}
 	#app{
+		width: 100%;
 		height: 100%;
 		/* margin-top: 60px; */
 		font-family: 'Avenir', Helvetica, Arial, sans-serif;

@@ -5,15 +5,16 @@
 		2.在 标签绑定 prop=“规则名”
 		 validate-event:验证事件-->
 		<el-form ref="form" :model="form" label-width="200px" :rules="rules">
-			<el-form-item label="账号" prop="account">
-				<el-input v-model="form.account" validate-event placeholder="请输入账号" style="width: 300px;"></el-input>
+			<el-form-item label="账号" prop="account"><i class="el-icon-user-solid"></i>
+				<el-input v-model="form.account" validate-event placeholder="请输入账号" @keydown.enter.native="submitForm(form.account,form.password)" style="width: 300px;"></el-input>
 			</el-form-item>
-			<el-form-item label="密码" prop="password">
+			<el-form-item label="密码" prop="password"><i class="el-icon-user-solid"></i>
 				<!-- 使用show-password属性即可得到一个可切换显示隐藏的密码框 -->
-				<el-input v-model="form.password" show-password validate-event placeholder="请输入密码" style="width: 300px;"></el-input>
+				<el-input v-model="form.password" show-password validate-event placeholder="请输入密码" @keydown.enter.native="submitForm(form.account,form.password)"  style="width: 300px;"></el-input>
 			</el-form-item>
 			<el-form-item>
-				<el-button type="primary" @click="submitForm('ruleForm')">登录</el-button>
+				<!-- type控制按钮颜色 -->
+				<el-button type="primary" @click="submitForm(form.account,form.password)">登录</el-button>
 				<el-button @click="resetForm(form.account, form.password)">注册</el-button>
 			</el-form-item>
 		</el-form>
@@ -22,7 +23,7 @@
 
 <script>
 	// 自定义校验规则
-	let customEvents = (rule, value, callback) => {
+	const customEvents = (rule, value, callback) => {
 		// rule 对应使用bargainMoney自定义验证的 对象
 		// value 对应使用bargainMoney自定义验证的 数值 
 		// callback 回调函数
@@ -30,7 +31,7 @@
 		if (value === null || value.trim() === "") {
 			callback(new Error("不能为空"));
 		} else if (!r.test(value)) {
-			callback(new Error("密码需同时含有数字和字母，且长度要在5-10位之间"));
+			callback(new Error("密码由有数字和字母组成，且长度要在5-10位之间"));
 		} else {
           callback();
         }
@@ -41,8 +42,18 @@
 				//form表单input数据绑定
 				form: {
 					account: '',
-					password: ''
+					password: '',
 				},
+				sjk : [
+					{
+						account: 'admin',
+						password: 'admin123',
+					},
+					{
+						account: 'fangbin',
+						password: 'fangbin123',
+					},
+				],
 				// custom: (rule, value, callback) => {
 				// 	console.log(rule)
 				// },
@@ -82,34 +93,68 @@
 			}
 		},
 		created() {
-			// this.custom('123')
+			
 		},
 		methods: {
-			submitForm() {
+			submitForm(...age){
+				const account =this.sjk.filter(items => items.account === age[0] && items.password === age[1]);
 				//this.$refs是一个对象，持有当前组件中注册过 ref特性的所有 DOM 元素和子组件实例
 				// validate表单验证方法调用
 				this.$refs.form.validate().then(res => {
-					// $message全局方法
-					this.$message({
-						message: '登录成功',
-						type: 'success',
-						duration:1000,
-					});
-					//跳转路由
-					//this.$router.replace('/about')
-					//替换路由
-					this.$router.push('/home')
+					// $message全局方法 ,消息提示
+					if(account.length>0){
+						this.$message({
+							message: '登录成功',
+							type: 'success',
+							duration:2000,
+						});
+						//替换路由
+						this.$router.push('/home');
+					}else{
+						this.$message({
+							message: '',
+							message: '登录失败 没有账号可以先注册哦',
+							type: 'warning',
+							duration:2000,
+						});
+					}
 				}).catch(err => {
 					this.$message({
 						message: '登录失败',
 						type: 'warning',
+						duration:1000,
 					});
 				})
-				// console.log('submit!');
-
 			},
 			resetForm(...age) {
-				console.log(age);
+				const account =this.sjk.filter(items => items.account === age[0]);
+				this.$refs.form.validate().then(res => {
+					if(account.length>0){
+						this.$message({
+							message: '用户名已存在',
+							type: 'warning',
+							duration:2000,
+						});
+					}else{
+						const Newaccount = {
+							account: age[0],
+							password: age[1],
+						};
+						this.sjk.push(Newaccount);
+						this.$message({
+							message: '注册成功',
+							type: 'success',
+							duration:2000,
+						});
+						console.log(this.sjk)
+					}
+				}).catch(err => {
+					this.$message({
+						message: '注册失败',
+						type: 'warning',
+						duration:1000,
+					});
+				})
 			}
 		}
 	}
@@ -124,5 +169,10 @@
 		justify-content: center;
 		/* align-items是垂直方向的对齐方式 */
 		align-items: center;
+		/* background-image:url(../img/denglu.jpeg); */
+	}
+	.el-form{
+		border: #000000 solid 1px;
+		padding-right: 10rem;
 	}
 </style>
