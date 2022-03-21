@@ -1,5 +1,8 @@
 <template>
-	<div class="about">
+	<div class="about"  v-loading="loading"
+    element-loading-text="loading"
+    element-loading-spinner="el-icon-loading"
+    element-loading-background="rgba(255, 255, 255, 1)">
 		<!-- 登录页面 -->
 		<!-- prop:1.在 标签中绑定 :rules=“方法名称”,然后在 data 里写规则
 		2.在 标签绑定 prop=“规则名”
@@ -8,13 +11,13 @@
 			<el-form-item label="账号" prop="account"><i class="el-icon-user-solid"
 					style="font-size: 1.2rem; line-height: 2.5rem;"></i>
 				<el-input v-model="form.account" validate-event placeholder="请输入账号"
-					@keydown.enter.native="submitForm(form.account,form.password)" style="width: 300px;"></el-input>
+					@keydown.enter.native="submitForm(form.account,form.password);loginBtn()" style="width: 300px;"></el-input>
 			</el-form-item>
 			<el-form-item label="密码" prop="password"><i class="el-icon-lock"
 					style="font-size: 1.2rem; line-height: 2.5rem;"></i>
 				<!-- 使用show-password属性即可得到一个可切换显示隐藏的密码框 -->
 				<el-input v-model="form.password" show-password validate-event placeholder="请输入密码"
-					@keydown.enter.native="submitForm(form.account,form.password)" style="width: 300px;"></el-input>
+					@keydown.enter.native="submitForm(form.account,form.password);loginBtn()" style="width: 300px;"></el-input>
 			</el-form-item>
 			<!-- 验证码 -->
 			<el-form-item prop="verifycode" style="line-height:0px;" class="VerificationCode">
@@ -22,7 +25,7 @@
 					<sidentify :identifyCode="identifyCode"></sidentify>
 				</div>
 				<el-input v-model="form.verifycode" ref="verifycode" placeholder="验证码" class="identifyinput"
-					style="width:230px;" @keydown.enter.native="submitForm(form.account,form.password)"></el-input>
+					style="width:230px;" @keydown.enter.native="submitForm(form.account,form.password);loginBtn()"></el-input>
 			</el-form-item>
 			<el-form-item>
 				<!-- type控制按钮颜色 -->
@@ -70,6 +73,7 @@
 				}
 			};
 			return {
+				loading: false,
 				//form表单input数据绑定
 				form: {
 					account: '',
@@ -144,9 +148,15 @@
 							type: 'success',
 							duration: 2000,
 						});
+						//模拟登录加载
+						this.loading = true;
+						setTimeout(() =>{
 						//替换路由
-						//this.$router.push('/home');
-						this.$router.push({path: '/home'});
+						this.$router.push('/home');
+						},2000) 
+						// this.$router.push({path: '/home'});
+						//let flag = true;
+						//this.$store.commit('login',flag);
 					} else {
 						this.$message({
 							message: '',
@@ -216,20 +226,8 @@
 			},
 			//验证码----end
 			loginBtn () {
-			    // 表单预验证
-			    // this.$refs.form.validate(async valid => {
-			    //   if (!valid) return
-			    //   // 验证通过，发起登录请求
-			    //   const { data: res } = await this.$http.post('home', this.form)
-			    //   if (res.meta.status !== 200) return this.$message.error('登录失败')
-			    //   this.$message.success('登录成功')
-			    //   // 1. 将登录成功之后的 token，保存到客户端的 sessionStorage 中
-			    //   //   1.1 项目中出了登录之外的其他API接口，必须在登录之后才能访问
-			    //   //   1.2 token 只应在当前网站打开期间生效，所以将 token 保存在 sessionStorage 中
-			    //   window.sessionStorage.setItem('token', res.data.token)
-			    //   // 2. 通过编程式导航跳转到后台主页，路由地址是 /home
-			    //   this.$router.push('/home')
-			    // })
+			//dispatch：异步操作，写法： this.$store.dispatch(‘mutations方法名’,值)
+			 this.$store.dispatch('login', this.form.account)
 			  }
 		},
 
@@ -275,5 +273,15 @@
 	}
 	.VerificationCode div:nth-child(2){
 		top: -0.625rem;
+		
+	}
+	/* 加载样式 */
+	.el-loading-spinner{
+		font-size: 12.5rem;
+		position: relative;
+		top: 20rem;
+	}
+	.el-loading-spinner .el-loading-text{
+		font-size: 3rem;
 	}
 </style>
