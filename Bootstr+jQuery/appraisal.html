@@ -99,6 +99,156 @@
 					console.log("销毁")
 				},
 			})
+			function eat() {
+			  console.log('好的，我开动咯');
+			}
+			
+			function cooking(cb) {
+			  console.log('妈妈认真做饭');
+			  setTimeout(function () {
+			    console.log('小明快过来，开饭啦')
+			    cb();
+			  }, 1000);
+			}
+			
+			function read() {
+			  console.log('小明假装正在读书');
+			}
+			
+			cooking(eat);
+			read();
+			
+			/* 执行顺序：
+			妈妈认真做饭
+			小明假装正在读书
+			小明快过来，开饭啦
+			好的，我开动咯
+			优点： 简单
+			缺点： 如果有大量异步并存在依赖会形成回调地狱
+			*/
+			function eat() {
+			  console.log('妈妈敲门啦，该去吃饭啦');
+			}
+			
+			function cooking() {
+			  console.log('妈妈认真做饭');
+			  setTimeout(function () {
+			    console.log('小明，出来吃饭啦')
+			    bus.$emit('done');
+			  }, 3000);
+			}
+			
+			function read() {
+			  console.log('小明又假装正在读书');
+			  bus.$on('done', eat);
+			}
+			
+			cooking();
+			read();
+			/* 执行顺序：
+			妈妈认真做饭
+			小明又假装正在读书
+			小明，出来吃饭啦
+			妈妈敲门啦，该去吃饭啦
+			优点：代码解耦
+			缺点：处理回调地狱需要定义和监听大量的事件
+			*/
+			function eat() {
+			  console.log('爸爸叫我去吃饭啦');
+			}
+			
+			function cooking() {
+			  console.log('妈妈认真做饭');
+			  setTimeout(function () {
+			    console.log('孩子他爸，叫小明出来吃饭');
+			    Dad.publish("done");
+			  }, 3000);
+			}
+			
+			function read() {
+			  console.log('小明依旧假装正在读书');
+			  Dad.subscribe('done', eat);
+			}
+			
+			cooking();
+			read();
+			
+			/* 执行顺序：
+			妈妈认真做饭
+			小明依旧假装正在读书
+			孩子他爸，叫小明出来吃饭
+			爸爸叫我去吃饭啦
+			优点：创建了一下中介者（Dad）来管理发布和订阅，事件越多越强大
+			缺点：仍然需要定义一大堆事件
+			*/
+			function read() {
+			  console.log('小明认真读书');
+			}
+			
+			function eat() {
+			  return new Promise((resolve, reject) => {
+			    console.log('好嘞，吃饭咯');
+			    setTimeout(() => {
+			      resolve('饭吃饱啦');
+			    }, 1000)
+			  })
+			}
+			
+			function wash() {
+			  return new Promise((resolve, reject) => {
+			    console.log('唉，又要洗碗');
+			    setTimeout(() => {
+			      resolve('碗洗完啦');
+			    }, 1000)
+			  })
+			}
+			
+			function mop() {
+			  return new Promise((resolve, reject) => {
+			    console.log('唉，还要拖地');
+			    setTimeout(() => {
+			      resolve('地拖完啦');
+			    }, 1000)
+			  })
+			}
+			
+			const cooking = new Promise((resolve, reject) => {
+			  console.log('妈妈认真做饭');
+			  setTimeout(() => {
+			    resolve('小明快过来，开饭啦');
+			  }, 3000);
+			})
+			
+			cooking.then(msg => {
+			  console.log(msg);
+			  return eat();
+			}).then(msg => {
+			  console.log(msg);
+			  return wash();
+			}).then(msg => {
+			  console.log(msg);
+			  return mop();
+			}).then(msg => {
+			  console.log(msg);
+			  console.log('终于结束啦，出去玩咯')
+			})
+			read();
+			
+			/* 执行顺序：
+			妈妈认真做饭
+			小明认真读书
+			小明快过来，开饭啦
+			好嘞，吃饭咯
+			饭吃饱啦
+			唉，又要洗碗
+			碗洗完啦
+			唉，还要拖地
+			地拖完啦
+			终于结束啦，出去玩咯
+			优点： 既有回调函数的简单直观，又具备事件的状态内聚
+			缺点： 错误会被吃掉，无法通过window.onerror捕获
+			*/ 
+
 		</script>
 	</body>
 </html>

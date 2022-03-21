@@ -1,7 +1,7 @@
 <template>
 	<div class="home">
 		<el-container style="height: 100%; border: 1px solid #eee">
-			<el-aside width="300px" style="background-color: rgb(238, 241, 246)">
+			<el-aside width="300px" style="background-color: rgb(238, 241, 246)"  draggable>
 				<el-menu><img src="../img/logo.png" style="font-size: 1.25rem;"></el-menu>
 				<!-- default-openeds默认展开 -->
 				<el-menu :default-openeds="[]">
@@ -43,45 +43,57 @@
 
 			<el-container>
 				<el-header class="toubu" style="text-align: right; background-color: #b3c0d1;">
-					<!-- <ul style="float: left;">
-						<li>首页</li>
-						<li>全选</li>
-					</ul> -->
-					<el-button type="text" @click="handleLogout">退出登录</el-button>
 					<el-dropdown>
 						<i class="el-icon-setting" style="margin-right: 15px"></i>
 						<el-dropdown-menu slot="dropdown">
-							<el-dropdown-item>查看</el-dropdown-item>
-							<el-dropdown-item>新增</el-dropdown-item>
-							<el-dropdown-item>删除</el-dropdown-item>
+							<el-dropdown-item><el-button type="text" @click="handleLogout">退出登录</el-button></el-dropdown-item>
 						</el-dropdown-menu>
 		 		</el-dropdown>
 				</el-header>
-
 				<el-main>
 					<template>
-						<el-table :data="tableData" style="width: 100%">
-							<el-table-column label="日期" width="180">
-								<template slot-scope="scope">
+						<el-table :data="tableData" style="width: 100%" border max-height="500" prop="date">
+							 <el-table-column label="序号" type="index" width="100">
+							     </el-table-column>
+							<el-table-column label="日期" width="180" sortable>
+								<template slot-scope="label">
 									<i class="el-icon-time"></i>
-									<span style="margin-left: 10px">{{ scope.row.date }}</span>
+									<span style="margin-left: 10px">{{ label.row.date }}</span>
 								</template>
 							</el-table-column>
-							<el-table-column label="姓名" width="180">
-								<template slot-scope="scope">
-									<el-popover trigger="hover" placement="top">
-										<p>姓名: {{ scope.row.name }}</p>
-										<p>住址: {{ scope.row.address }}</p>
-										<div slot="reference" class="name-wrapper">
-											<el-tag size="medium">{{ scope.row.name }}</el-tag>
-										</div>
+							<el-table-column label="姓名" width="180" sortable>
+								<template slot-scope="label">
+									<span style="margin-left: 10px">{{ label.row.name }}</span>
 									</el-popover>
 								</template>
 							</el-table-column>
-							<el-table-column label="操作">
-								<template slot-scope="scope">
-									<el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-									<el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">
+							<el-table-column label="地址" width="400" sortable>
+								<template slot-scope="label">
+									<span style="margin-left: 10px">{{ label.row.address }}</span>
+									</el-popover>
+								</template>
+							</el-table-column>
+							<el-table-column label="在线状态" width="280" sortable>
+								<template slot-scope="label">
+									<el-switch
+									  style="display: block"
+									  v-model="label.row.state"
+									  active-color="#13ce66"
+									  inactive-color="#ff4949">
+									</el-switch>
+									</el-popover>
+								</template>
+							</el-table-column>
+							<el-table-column label="电话" width="280" sortable>
+								<template slot-scope="label">
+									<span style="margin-left: 10px">{{ label.row.phone }}</span>
+									</el-popover>
+								</template>
+							</el-table-column>
+							<el-table-column label="操作" fixed="right" min-width="200px">
+								<template slot-scope="label">
+									<el-button size="mini" @click="handleEdit(label.$index, label.row)">编辑</el-button>
+									<el-button size="mini" type="danger" @click="handleDelete(tableData.splice(label.$index,1))">
 										删除</el-button>
 								</template>
 							</el-table-column>
@@ -105,23 +117,51 @@
 				tableData: [{
 						date: '2022-05-02',
 						name: '王小虎',
-						address: '上海市普陀区金沙江路 1518 弄'
+						address: '上海市普陀区金沙江路 1518 弄',
+						phone: '17610141452',
+						state: true,
 					},
 					{
 						date: '2022-05-03',
 						name: '张三',
-						address: '上海市普陀区金沙江路 1518 弄'
+						address: '上海市普陀区金沙江路 1518 弄',
+						phone: '17610141452',
+						state: true,
 					},
 					{
 						date: '2022-05-04',
 						name: '李四',
-						address: '上海市普陀区金沙江路 1518 弄'
+						address: '上海市普陀区金沙江路 1518 弄',
+						phone: '17610141452',
+						state: true,
 					},
 					{
 					 date: '2022-05-05',
 						name: '王五',
-					 address: '上海市普陀区金沙江路 1518 弄'
-					}
+					 address: '上海市普陀区金沙江路 1518 弄',
+						phone: '17610141452',
+						state: false,
+					},{
+						date: '2022-05-04',
+						name: '李四',
+						address: '上海市普陀区金沙江路 1518 弄',
+						phone: '17610141452',
+						state: false,
+					},
+					{
+						date: '2022-05-04',
+						name: '李四',
+						address: '上海市普陀区金沙江路 1518 弄',
+						phone: '17610141452',
+						state: false,
+					},
+					{
+						date: '2022-05-04',
+						name: '李四',
+						address: '上海市普陀区金沙江路 1518 弄',
+						phone: '17610141452',
+						state: true,
+					},
 				]
 			}
 
@@ -160,16 +200,17 @@
 	}
 
 	.el-header {
+		height: 60px;
 		background-color: #B3C0D1;
 		color: #333;
 		line-height: 60px;
 	}
-
-	.toubu ul,
-	.toubu li {
-		display: inline;
-		margin: 0 20px;
+	
+	.el-header i {
+		line-height: 60px;
+		font-size: 30px;
 	}
+	
 
 	.el-aside {
 		background-color: #333;
@@ -181,8 +222,4 @@
 		line-height: 60px;
 	}
 
-	.el-header i {
-		line-height: 60px;
-		font-size: 30px;
-	}
 </style>

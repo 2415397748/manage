@@ -153,7 +153,7 @@
 						setTimeout(() =>{
 						//替换路由
 						this.$router.push('/home');
-						},2000) 
+						},1200) 
 						// this.$router.push({path: '/home'});
 						//let flag = true;
 						//this.$store.commit('login',flag);
@@ -226,7 +226,7 @@
 			},
 			//验证码----end
 			loginBtn () {
-			//dispatch：异步操作，写法： this.$store.dispatch(‘mutations方法名’,值)
+			//dispatch：异步操作，写法： this.$store.dispatch(‘mutations方法名’,传入的值)
 			 this.$store.dispatch('login', this.form.account)
 			  }
 		},
