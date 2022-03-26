@@ -52,7 +52,7 @@
 				</el-header>
 				<el-main>
 					<template>
-						<el-table :data="tableData" style="width: 100%" border max-height="500" prop="date">
+						<el-table :data="tableData" style="width: 100%" border max-height="500">
 							 <el-table-column label="序号" type="index" width="100">
 							     </el-table-column>
 							<el-table-column label="日期" width="180" sortable>

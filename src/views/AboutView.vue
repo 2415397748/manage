@@ -11,13 +11,13 @@
 			<el-form-item label="账号" prop="account"><i class="el-icon-user-solid"
 					style="font-size: 1.2rem; line-height: 2.5rem;"></i>
 				<el-input v-model="form.account" validate-event placeholder="请输入账号"
-					@keydown.enter.native="submitForm(form.account,form.password);loginBtn()" style="width: 300px;"></el-input>
+					@keydown.enter.native="submitForm(form.account,form.password)" style="width: 300px;"></el-input>
 			</el-form-item>
 			<el-form-item label="密码" prop="password"><i class="el-icon-lock"
 					style="font-size: 1.2rem; line-height: 2.5rem;"></i>
 				<!-- 使用show-password属性即可得到一个可切换显示隐藏的密码框 -->
 				<el-input v-model="form.password" show-password validate-event placeholder="请输入密码"
-					@keydown.enter.native="submitForm(form.account,form.password);loginBtn()" style="width: 300px;"></el-input>
+					@keydown.enter.native="submitForm(form.account,form.password)" style="width: 300px;"></el-input>
 			</el-form-item>
 			<!-- 验证码 -->
 			<el-form-item prop="verifycode" style="line-height:0px;" class="VerificationCode">
@@ -25,11 +25,11 @@
 					<sidentify :identifyCode="identifyCode"></sidentify>
 				</div>
 				<el-input v-model="form.verifycode" ref="verifycode" placeholder="验证码" class="identifyinput"
-					style="width:230px;" @keydown.enter.native="submitForm(form.account,form.password);loginBtn()"></el-input>
+					style="width:230px;" @keydown.enter.native="submitForm(form.account,form.password)"></el-input>
 			</el-form-item>
 			<el-form-item>
 				<!-- type控制按钮颜色 -->
-				<el-button type="primary" @click="submitForm(form.account,form.password);loginBtn()">登录</el-button>
+				<el-button type="primary" @click="submitForm(form.account,form.password)">登录</el-button>
 				<el-button @click="resetForm(form.account, form.password)">注册</el-button>
 			</el-form-item>
 		</el-form>
@@ -150,6 +150,8 @@
 						});
 						//模拟登录加载
 						this.loading = true;
+						//dispatch：异步操作，写法： this.$store.dispatch(‘mutations方法名’,传入的值)
+						this.$store.dispatch('login', this.form.account)
 						setTimeout(() =>{
 						//替换路由
 						this.$router.push('/home');
@@ -225,10 +227,7 @@
 				// console.log("this.identifyCode:", this.identifyCode);
 			},
 			//验证码----end
-			loginBtn () {
-			//dispatch：异步操作，写法： this.$store.dispatch(‘mutations方法名’,传入的值)
-			 this.$store.dispatch('login', this.form.account)
-			  }
+			
 		},
 
 		created() {
