@@ -139,7 +139,7 @@
 				const yes = this.$data.sjk.filter(items => items.account === age[0] && items.password === age[1]);
 				//this.$refs是一个对象，持有当前组件中注册过 ref特性的所有 DOM 元素和子组件实例
 				// validate表单验证方法调用
-				console.log(yes)
+				// console.log(yes)
 				this.$refs.form.validate().then(res => {
 					// $message全局方法 ,消息提示
 					if (yes.length > 0) {
@@ -147,6 +147,8 @@
 							message: '登录成功',
 							type: 'success',
 							duration: 2000,
+							showClose: true,
+							center: true,
 						});
 						//模拟登录加载
 						this.loading = true;
@@ -165,6 +167,8 @@
 							message: '登录失败 没有账号可以先注册哦',
 							type: 'warning',
 							duration: 2000,
+							showClose: true,
+							center: true,
 						});
 					}
 				}).catch(err => {
@@ -172,6 +176,8 @@
 						message: '登录失败',
 						type: 'warning',
 						duration: 1000,
+						showClose: true,
+						center: true,
 					});
 				});
 				this.refreshCode();
@@ -185,6 +191,8 @@
 							message: '用户名已存在',
 							type: 'warning',
 							duration: 2000,
+							showClose: true,
+							center: true,
 						});
 					} else {
 						const Newaccount = {
@@ -196,6 +204,8 @@
 							message: '注册成功',
 							type: 'success',
 							duration: 2000,
+							showClose: true,
+							center: true,
 						});
 						console.log(this.sjk);
 					}
@@ -204,6 +214,8 @@
 						message: '注册失败',
 						type: 'warning',
 						duration: 1000,
+						showClose: true,
+						center: true,
 					});
 				});
 				this.refreshCode();

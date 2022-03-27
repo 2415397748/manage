@@ -56,7 +56,7 @@ router.beforeEach((to, from, next) => {
   // /home
   // 2.如果访问的是有登录权限的页面，先要获取token
   const tokenStr = window.sessionStorage.getItem('token');
-  console.log('tokenStr', tokenStr);
+  // console.log('tokenStr', tokenStr);
   // 2.1如果token为空，强制跳转到登录页面；否则，直接放行
   if (!tokenStr) next('/index');
   next();

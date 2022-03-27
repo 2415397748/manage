@@ -4,14 +4,14 @@
 			<el-aside width="300px" style="background-color: rgb(238, 241, 246)"  draggable>
 				<el-menu><img src="../img/logo.png" style="font-size: 1.25rem;"></el-menu>
 				<!-- default-openeds默认展开 -->
-				<el-menu :default-openeds="[]">
-		 		<el-submenu index="1">
+				<el-menu :default-openeds="[]" default-active="1-1">
+					<el-submenu index="1">
 						<template slot="title"><i class="el-icon-user-solid"></i>用户管理</template>
 						<el-menu-item-group>
 							<el-menu-item index="1-1"><i class="el-icon-menu"></i>用户列表</el-menu-item>
 						</el-menu-item-group>
 					</el-submenu>
-		 		<el-submenu index="2">
+					<el-submenu index="2">
 						<template slot="title"><i class="el-icon-setting"></i>权限管理</template>
 						<el-menu-item-group>
 							<el-menu-item index="2-1"><i class="el-icon-menu"></i>角色列表</el-menu-item>
@@ -42,7 +42,8 @@
 			</el-aside>
 
 			<el-container>
-				<el-header class="toubu" style="text-align: right; background-color: #b3c0d1;">
+				<el-header class="toubu" style="background-color: #b3c0d1;text-align: right;">
+					<a href="/index"><span>首页</span></a>
 					<el-dropdown>
 						<i class="el-icon-setting" style="margin-right: 15px"></i>
 						<el-dropdown-menu slot="dropdown">
@@ -51,61 +52,17 @@
 		 		</el-dropdown>
 				</el-header>
 				<el-main>
-					<template>
-						<el-table :data="tableData" style="width: 100%" border max-height="500">
-							 <el-table-column label="序号" type="index" width="100">
-							     </el-table-column>
-							<el-table-column label="日期" width="180" sortable>
-								<template slot-scope="label">
-									<i class="el-icon-time"></i>
-									<span style="margin-left: 10px">{{ label.row.date }}</span>
-								</template>
-							</el-table-column>
-							<el-table-column label="姓名" width="180" sortable>
-								<template slot-scope="label">
-									<span style="margin-left: 10px">{{ label.row.name }}</span>
-									</el-popover>
-								</template>
-							</el-table-column>
-							<el-table-column label="地址" width="400" sortable>
-								<template slot-scope="label">
-									<span style="margin-left: 10px">{{ label.row.address }}</span>
-									</el-popover>
-								</template>
-							</el-table-column>
-							<el-table-column label="在线状态" width="280" sortable>
-								<template slot-scope="label">
-									<el-switch
-									  style="display: block"
-									  v-model="label.row.state"
-									  active-color="#13ce66"
-									  inactive-color="#ff4949">
-									</el-switch>
-									</el-popover>
-								</template>
-							</el-table-column>
-							<el-table-column label="电话" width="280" sortable>
-								<template slot-scope="label">
-									<span style="margin-left: 10px">{{ label.row.phone }}</span>
-									</el-popover>
-								</template>
-							</el-table-column>
-							<el-table-column label="操作" fixed="right" min-width="200px">
-								<template slot-scope="label">
-									<el-button size="mini" @click="handleEdit(label.$index, label.row)">编辑</el-button>
-									<el-button size="mini" type="danger" @click="handleDelete(tableData.splice(label.$index,1))">
-										删除</el-button>
-								</template>
-							</el-table-column>
-						</el-table>
-					</template>
+					<diyi></diyi>
 				</el-main>
 			</el-container>
 		</el-container>
 	</div>
 </template>
 <script>
+	import diyi from "./table/1-1.vue";
+	
 	export default {
+		components: { diyi },
 		data() {
 			// const item = {
 			//   date: '2016-05-02',
@@ -113,66 +70,11 @@
 			//   address: '上海市普陀区金沙江路 1518 弄'
 			// };
 			return {
-				// tableData: Array(20).fill(item)
-				tableData: [{
-						date: '2022-05-02',
-						name: '王小虎',
-						address: '上海市普陀区金沙江路 1518 弄',
-						phone: '17610141452',
-						state: true,
-					},
-					{
-						date: '2022-05-03',
-						name: '张三',
-						address: '上海市普陀区金沙江路 1518 弄',
-						phone: '17610141452',
-						state: true,
-					},
-					{
-						date: '2022-05-04',
-						name: '李四',
-						address: '上海市普陀区金沙江路 1518 弄',
-						phone: '17610141452',
-						state: true,
-					},
-					{
-					 date: '2022-05-05',
-						name: '王五',
-					 address: '上海市普陀区金沙江路 1518 弄',
-						phone: '17610141452',
-						state: false,
-					},{
-						date: '2022-05-04',
-						name: '李四',
-						address: '上海市普陀区金沙江路 1518 弄',
-						phone: '17610141452',
-						state: false,
-					},
-					{
-						date: '2022-05-04',
-						name: '李四',
-						address: '上海市普陀区金沙江路 1518 弄',
-						phone: '17610141452',
-						state: false,
-					},
-					{
-						date: '2022-05-04',
-						name: '李四',
-						address: '上海市普陀区金沙江路 1518 弄',
-						phone: '17610141452',
-						state: true,
-					},
-				]
+				
 			}
 
 		},
 		methods: {
-			handleEdit(index, row) {
-				console.log(index, row);
-			},
-			handleDelete(index, row) {
-				console.log(index, row);
-			},
 			handleLogout () {
 				this.$store.dispatch('logout')
 				this.$router.go(0)
@@ -199,27 +101,38 @@
 		height: 100%;
 	}
 
-	.el-header {
+	.el-aside {
+		background-color: #333;
+	}
+
+
+	.toubu {
 		height: 60px;
 		background-color: #B3C0D1;
 		color: #333;
 		line-height: 60px;
 	}
 	
-	.el-header i {
+	.toubu i {
 		line-height: 60px;
 		font-size: 30px;
 	}
 	
-
-	.el-aside {
-		background-color: #333;
-	}
-
 	.el-footer,
-	.el-header {
+	.toubu {
 		color: #333;
 		line-height: 60px;
 	}
-
+	
+	.toubu span{
+		position: absolute;
+		left: 20rem;
+		color: #409EFF;
+	}
+	
+	
+	.el-main{
+		padding:0;
+		padding-top: 20px;
+	}
 </style>
