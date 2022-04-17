@@ -1,40 +1,46 @@
 <template>
-	<div>
+	<el-main>
 		<el-row>
-			<el-input placeholder="搜索" width="100px"></el-input>
-			<el-button icon="el-icon-search" type="info" class="sousuo"></el-button>
+			<el-input placeholder="搜索" class="searchIpu"></el-input>
+			<el-button icon="el-icon-search" type="info" class="search"></el-button>
+			<el-dropdown>
+			  <el-button type="primary">+</el-button>
+			  <el-dropdown-menu slot="dropdown" split-button="true">
+			    <el-dropdown-item>黄金糕</el-dropdown-item>
+			  </el-dropdown-menu>
+			</el-dropdown>
+			<el-button type="primary">新增信息+</el-button>
 		</el-row>
-		<el-table :data="tableData" style="width: 100%" border max-height="500"  
-		:default-sort = "{prop: 'date', order: 'descending'}">
+		<el-table :data="tableData" style="width: 100%" border max-height="500">
 			<el-table-column :label="tables[0]" type="index" width="100"></el-table-column>
-			<el-table-column :label="tables[1]" width="180" sortable >
+			<el-table-column :label="tables[1]" width="180" sortable prop="date">
 				<template slot-scope="label">
 					<i class="el-icon-time"></i>
 					<span style="margin-left: 10px">{{ label.row.date }}</span>
 				</template>
 			</el-table-column>
-			<el-table-column :label="tables[2]" width="180" sortable>
+			<el-table-column :label="tables[2]" width="180" sortable prop="name">
 				<template slot-scope="label">
 					<span style="margin-left: 10px">{{ label.row.name }}</span>
 					</el-popover>
 				</template>
 			</el-table-column>
-			<el-table-column :label="tables[3]" width="400" sortable>
+			<el-table-column :label="tables[3]" width="400" sortable  prop="address">
 				<template slot-scope="label">
 					<span style="margin-left: 10px">{{ label.row.address }}</span>
 					</el-popover>
 				</template>
 			</el-table-column>
-			<el-table-column :label="tables[4]" width="280" sortable>
+			<el-table-column :label="tables[4]" width="250" sortable  prop="phone">
 				<template slot-scope="label">
 					<span style="margin-left: 10px">{{ label.row.phone }}</span>
 					</el-popover>
 				</template>
 			</el-table-column>
-			<el-table-column :label="tables[5]" width="150" sortable>
+			<el-table-column :label="tables[5]" width="150" sortable  prop="state">
 				<template slot-scope="label">
 					<el-switch style="display: block" v-model="label.row.state" active-color="#13ce66"
-						inactive-color="#ff4949" disabled>
+						inactive-color="#ff4949" disabled active-text="true" inactive-text="false">
 					</el-switch>
 					</el-popover>
 				</template>
@@ -79,12 +85,12 @@
 				</div>
 			</div>
 		</el-drawer>
-	</div>
+	</el-main>
 </template>
 
 <script>
 	export default {
-		name: 'diyi',
+		name: 'userslist',
 		data() {
 			return {
 				from:{
@@ -100,7 +106,7 @@
 						id:'1',
 						date: '2022-05-02',
 						name: '王小虎',
-						address: '上海市普陀区金沙江路 1518 弄',
+						address: '上海市普陀区金沙江路 1511 弄',
 						phone: '17610141452',
 						state: true,
 					},
@@ -109,44 +115,44 @@
 						date: '2022-05-03',
 						name: '张三',
 						address: '上海市普陀区金沙江路 1518 弄',
-						phone: '17610141452',
+						phone: '17610141526',
 						state: true,
 					},
 					{
 						id:'3',
 						date: '2022-05-04',
 						name: '李四',
-						address: '上海市普陀区金沙江路 1518 弄',
-						phone: '17610141452',
+						address: '上海市普陀区金沙江路 1515 弄',
+						phone: '17610145478',
 						state: true,
 					},
 					{
 						id:'4',
 						date: '2022-05-05',
 						name: '王五',
-						address: '上海市普陀区金沙江路 1518 弄',
-						phone: '17610141452',
+						address: '上海市普陀区金沙江路 1516 弄',
+						phone: '151457584787',
 						state: false,
 					}, {
 						id:'5',
 						date: '2022-05-04',
-						name: '李四',
-						address: '上海市普陀区金沙江路 1518 弄',
-						phone: '17610141452',
+						name: '林坤',
+						address: '南昌市华建区小姑路 120 栋',
+						phone: '13145714782',
 						state: false,
 					},
 					{
 						id:'6',
 						date: '2022-05-04',
-						name: '李四',
-						address: '上海市普陀区金沙江路 1518 弄',
-						phone: '17610141452',
+						name: '张三封',
+						address: '南昌市华建区小姑路 151 栋',
+						phone: '14569853742',
 						state: false,
 					},
 					{
 						id:'7',
 						date: '2022-05-04',
-						name: '李四',
+						name: '李静',
 						address: '上海市普陀区金沙江路 1518 弄',
 						phone: '17610141452',
 						state: true,
@@ -200,16 +206,29 @@
 </script>
 
 <style>
-	.sousuo{
+	.searchIpu{
+		width: 20%;
+		float: left;
+		/* 上右下左 */
+		padding:0 1.25rem 0.625rem 1.25rem ;
+	}
+	.search{
 		position: absolute;
-		right: 0;
+		/* calc简单计算像素 */
+		right: calc(80% - 1.25rem);
 	}
 	
 	tr{
 		color: #000000;
 	}
-	.el-table th,.el-table th i{
-		font-size: 1.25rem;
+	.el-table th{
+		font-size: 1rem;
 		color: #409EFF;
+	}
+	
+	.el-table th i{
+		/* background-color: #000000;
+		display: inline-block;
+		font-size: 1.25rem; */
 	}
 </style>

@@ -22,7 +22,7 @@
 			<!-- 验证码 -->
 			<el-form-item prop="verifycode" style="line-height:0px;" class="VerificationCode">
 				<div class="identifybox" @click="refreshCode">
-					<sidentify :identifyCode="identifyCode"></sidentify>
+					<verificationCode :identifyCode="identifyCode"></verificationCode>
 				</div>
 				<el-input v-model="form.verifycode" ref="verifycode" placeholder="验证码" class="identifyinput"
 					style="width:230px;" @keydown.enter.native="submitForm(form.account,form.password)"></el-input>
@@ -37,12 +37,9 @@
 </template>
 
 <script>
-	import sidentify from "./sidentify.vue";
 
 
 	export default {
-		
-		components: { sidentify },
 		data() {
 			// 自定义校验规则
 			const customEvents = (rule, value, callback) => {
@@ -156,8 +153,8 @@
 						this.$store.dispatch('login', this.form.account)
 						setTimeout(() =>{
 						//替换路由
-						this.$router.push('/home');
-						},1200) 
+						this.$router.push('/home/userslist');
+						},800) 
 						// this.$router.push({path: '/home'});
 						//let flag = true;
 						//this.$store.commit('login',flag);

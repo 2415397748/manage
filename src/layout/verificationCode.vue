@@ -5,7 +5,7 @@
 </template>
 <script>
 export default {
- name: 'SIdentify',
+ name: 'verificationCode',
  props: {
  identifyCode: {
   type: String,
@@ -139,3 +139,4 @@ export default {
  margin-left: 8px;
 }
 </style>
+const open = function () { const vm = thisreturn[{// type：‘’  可以通过type类型来判断展示那些组件内容    modules: [      {        id: 'baseInfo',        refName: 'baseInfo',        type: 'baseInfo',        component: () => import('@/components/open/BaseInfo')      },      {        id: 'lineInfo',        refName: 'lineInfo',        type: 'lineInfo',        component: () => import('@/components/OpenInfo')      },      {        id: 'reviewInfo',        refName: 'reviewInfo',        type: 'reviewInfo',        component: () => import('@/components/CommentReview')      },      {        id: 'orderInfo',        refName: 'orderInfo',        type: 'orderInfo',        component: () => import('@/components/OrderInfo')      }    ]  }]}export const openModules = vm => {return open.call(vm)}

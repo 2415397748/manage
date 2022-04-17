@@ -1,32 +1,68 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import AboutView from '../views/AboutView.vue'
+import index from '../views/index.vue'
 // import HomeView from '../views/HomeView.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
   {
+    name: '登录',
     path: '/index',
-    name: 'about',
-    component: AboutView
+    component: index
   },
   {
+    name: '主页面',
     path: '/home',
-    name: 'home',
+    redirect: to=>{
+      return {path: '/home/userslist'}
+      },
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/HomeView.vue'),
-	meta: {
-	  requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
-	  },
+    component: () => import(/* webpackChunkName: "about" */ '@/views/home.vue'),
+	children: [
+	  // {
+	  //   path: 'HeadNavigation',
+	  //   name: 'HeadNavigation',
+	  //   component: () => import('@/layout/HeadNavigation.vue'),
+	  //   meta: { title: 'HeadNavigation'}
+	  // },
+	  // {
+	  //   path: 'LeftNavigation',
+	  //   name: 'LeftNavigation',
+	  //   component: () => import('@/layout/LeftNavigation.vue'),
+	  //   meta: { title: 'LeftNavigation' }
+	  // },
+	  {
+	    name: '用户列表',
+	    path: 'userslist',
+	    component: () => import('@/layout/table.vue'),
+	    //  meta: {
+      //   requiresAuth: true
+      // },
+	  }
+	]
+	// meta: {
+	//   requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+	//   },
   },
+  // {
+  //   name: 'twoHome',
+  //   path: '/home2',
+  //   // route level code-splitting
+  //   // this generates a separate chunk (about.[hash].js) for this route
+  //   // which is lazy-loaded when the route is visited.
+  //   component: () => import(/* webpackChunkName: "about" */ '../views/head/home2.vue'),
+  // 	// meta: {
+  // 	//   requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+  // 	//   },
+  // },
   
   //路由重定向，函数中可以加判断方法
   {
-    path: '*',
     name: 'any',
+    path: '*',
     redirect: to=>{
 		return {path: '/index'}
 		}
