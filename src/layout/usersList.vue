@@ -254,9 +254,10 @@ export default {
       this.tableData.forEach((item) => {
         searchProps.some((val) => {
           if (item[val].indexOf(filterName) > -1) {
-            rest.push(item)
+            return item
           }
         })
+        rest.push(item)
       })
       console.log(rest)
       //   const rest = this.tableData.filter(item => searchProps.some(key => XEUtils.toValueString(item[key]).toLowerCase().indexOf(filterName) > -1))
