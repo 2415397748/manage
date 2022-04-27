@@ -250,20 +250,18 @@ export default {
       let table = this.$refs.listData
       const filterRE = new RegExp(filterName, 'gi')
       const searchProps = ['name', 'date', 'address', 'phone']
-      const rest = []
-      this.tableData.forEach((item) => {
-        searchProps.some((val) => {
-          if (item[val].indexOf(filterName) > -1) {
-            return item
-          }
+      let rest = this.tableData
+      if (!!filterName) {
+        rest = []
+        this.tableData.forEach((item) => {
+          searchProps.some((val) => {
+            if (item[val].indexOf(filterName) > -1) {
+              return rest.push(item)
+            }
+          })
         })
-        rest.push(item)
-      })
-      console.log(rest)
-      //   const rest = this.tableData.filter(item => searchProps.some(key => XEUtils.toValueString(item[key]).toLowerCase().indexOf(filterName) > -1))
-      //     const rest = this.tableData.filter((item) => searchProps.some())
-      //     return rest
-      return this.tableData
+      }
+      return rest
     },
   },
 }
