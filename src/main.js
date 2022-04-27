@@ -8,26 +8,15 @@ import 'element-ui/lib/theme-chalk/index.css'
 import 'default-passive-events'
 import components from './layout'
 
-Vue.use(components);
+Vue.use(components)
 
-// import sidentify from './layout/verification_code.vue'
-// import HeadNavigation from './layout/HeadNavigation.vue'
-// import LeftNavigation from './layout/LeftNavigation.vue'
-// import userslist from './layout/table.vue'
+Vue.use(ElementUI)
+Vue.config.productionTip = false
 
-// Vue.component('sidentify',sidentify)
-// Vue.component('HeadNavigation',HeadNavigation)
-// Vue.component('LeftNavigation',LeftNavigation)
-// Vue.component('userslist',userslist)
-
-Vue.use(ElementUI);
-Vue.config.productionTip = false;
-
-Vue.prototype.$bus=new Vue();
-
+Vue.prototype.$bus = new Vue()
 
 new Vue({
-  router,
-  store,
-  render: h => h(App)
+    router,
+    store,
+    render: (h) => h(App),
 }).$mount('#app')

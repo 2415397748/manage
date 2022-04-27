@@ -46,7 +46,8 @@
 				// rule 对应使用bargainMoney自定义验证的 对象
 				// value 对应使用bargainMoney自定义验证的 数值 
 				// callback 回调函数
-				const r = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{5,10}$/; // 要求：由数字和字母组成，并且要同时含有数字和字母，且长度要在8-16位之间。
+				const r = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{5,10}$/; 
+                // 要求：由数字和字母组成，并且要同时含有数字和字母，且长度要在8-16位之间。
 				if (value === null || value.trim() === "") {
 					callback(new Error("不能为空"));
 				} else if (!r.test(value)) {
@@ -153,8 +154,8 @@
 						this.$store.dispatch('login', this.form.account)
 						setTimeout(() =>{
 						//替换路由
-						this.$router.push('/home/userslist');
-						},800) 
+						this.$router.push('/home/usersList');
+						},500) 
 						// this.$router.push({path: '/home'});
 						//let flag = true;
 						//this.$store.commit('login',flag);
@@ -233,7 +234,6 @@
 						this.randomNum(0, this.identifyCodes.length)
 					];
 				}
-				// console.log("this.identifyCode:", this.identifyCode);
 			},
 			//验证码----end
 			

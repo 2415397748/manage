@@ -5,100 +5,96 @@ import index from '../views/index.vue'
 
 Vue.use(VueRouter)
 
-const routes = [
-  {
-    name: '登录',
-    path: '/index',
-    component: index
-  },
-  {
-    name: '主页面',
-    path: '/home',
-    redirect: to=>{
-      return {path: '/home/userslist'}
-      },
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '@/views/home.vue'),
-	children: [
-	  // {
-	  //   path: 'HeadNavigation',
-	  //   name: 'HeadNavigation',
-	  //   component: () => import('@/layout/HeadNavigation.vue'),
-	  //   meta: { title: 'HeadNavigation'}
-	  // },
-	  // {
-	  //   path: 'LeftNavigation',
-	  //   name: 'LeftNavigation',
-	  //   component: () => import('@/layout/LeftNavigation.vue'),
-	  //   meta: { title: 'LeftNavigation' }
-	  // },
-	  {
-	    name: '用户列表',
-	    path: 'userslist',
-	    component: () => import('@/layout/table.vue'),
-	    //  meta: {
-      //   requiresAuth: true
-      // },
-	  }
-	]
-	// meta: {
-	//   requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
-	//   },
-  },
-  // {
-  //   name: 'twoHome',
-  //   path: '/home2',
-  //   // route level code-splitting
-  //   // this generates a separate chunk (about.[hash].js) for this route
-  //   // which is lazy-loaded when the route is visited.
-  //   component: () => import(/* webpackChunkName: "about" */ '../views/head/home2.vue'),
-  // 	// meta: {
-  // 	//   requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
-  // 	//   },
-  // },
-  
-  //路由重定向，函数中可以加判断方法
-  {
-    name: 'any',
-    path: '*',
-    redirect: to=>{
-		return {path: '/index'}
-		}
-	}
+const routes = [{
+        name: '登录',
+        path: '/index',
+        component: index,
+    },
+    {
+        name: '主页面',
+        path: '/home',
+        redirect: (to) => {
+            return { path: '/home/userslist' }
+        },
+        // route level code-splitting
+        // this generates a separate chunk (about.[hash].js) for this route
+        // which is lazy-loaded when the route is visited.
+        component: () =>
+            import ( /* webpackChunkName: "about" */ '@/views/home.vue'),
+        children: [
+            // {
+            //   path: 'HeadNavigation',
+            //   name: 'HeadNavigation',
+            //   component: () => import('@/layout/HeadNavigation.vue'),
+            //   meta: { title: 'HeadNavigation'}
+            // },
+            // {
+            //   path: 'LeftNavigation',
+            //   name: 'LeftNavigation',
+            //   component: () => import('@/layout/LeftNavigation.vue'),
+            //   meta: { title: 'LeftNavigation' }
+            // },
+            {
+                name: '用户列表',
+                path: 'usersList',
+                component: () =>
+                    import ('@/layout/usersList.vue'),
+                //  meta: {
+                //   requiresAuth: true
+                // },
+            },
+        ],
+        // meta: {
+        //   requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+        //   },
+    },
+    // {
+    //   name: 'twoHome',
+    //   path: '/home2',
+    //   // route level code-splitting
+    //   // this generates a separate chunk (about.[hash].js) for this route
+    //   // which is lazy-loaded when the route is visited.
+    //   component: () => import(/* webpackChunkName: "about" */ '../views/head/home2.vue'),
+    // 	// meta: {
+    // 	//   requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+    // 	//   },
+    // },
+
+    //路由重定向，函数中可以加判断方法
+    {
+        name: 'any',
+        path: '*',
+        redirect: (to) => {
+            return { path: '/index' }
+        },
+    },
 ]
 
 const router = new VueRouter({
-  routes
-})
-// 解决路由守卫重定向报错问题
-const originalPush = VueRouter.prototype.push;
+        routes,
+    })
+    // 解决路由守卫重定向报错问题
+const originalPush = VueRouter.prototype.push
 
 VueRouter.prototype.push = function push(location) {
-
-  return originalPush.call(this, location).catch((err) => err);
-
-};
+    return originalPush.call(this, location).catch((err) => err)
+}
 
 // to：代表将要访问的路径 from：代表从哪个路径跳转而来 next：是一个函数，代表放行
 // next函数有两种写法：next()，代表放行；next(‘路径’)，代表强制跳转
 router.beforeEach((to, from, next) => {
-	// console.log('从哪个路径跳转而来', from.path);
-	// console.log('要访问的路径', to.path);
-	// next()
-  // 1.如果访问的是登录页面（无需权限），直接放行
-  if (to.path === '/index') next();
-  // /home
-  // 2.如果访问的是有登录权限的页面，先要获取token
-  const tokenStr = window.sessionStorage.getItem('token');
-  // console.log('tokenStr', tokenStr);
-  // 2.1如果token为空，强制跳转到登录页面；否则，直接放行
-  if (!tokenStr) next('/index');
-  next();
+    // console.log('从哪个路径跳转而来', from.path);
+    // console.log('要访问的路径', to.path);
+    // next()
+    // 1.如果访问的是登录页面（无需权限），直接放行
+    if (to.path === '/index') next()
+        // /home
+        // 2.如果访问的是有登录权限的页面，先要获取token
+    const tokenStr = window.sessionStorage.getItem('token')
+        // console.log('tokenStr', tokenStr);
+        // 2.1如果token为空，强制跳转到登录页面；否则，直接放行
+    if (!tokenStr) next('/index')
+    next()
 })
-
-
-
 
 export default router
