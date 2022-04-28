@@ -1,20 +1,24 @@
 <template>
-  <el-main>
-    <el-row>
-      <el-input placeholder="搜索"
-                class="searchIpu"
-                v-model="searchData"></el-input>
+  <el-main style="display:text-left">
+    <el-row style="display: line-block;">
+      <el-input placeholder="表格数据搜索"
+                class="searchIput"
+                v-model="searchIput"></el-input>
       <el-button icon="el-icon-search"
                  type="info"
-                 class="search"></el-button>
-      <el-dropdown>
-        <el-button type="primary">+</el-button>
-        <el-dropdown-menu slot="dropdown"
-                          split-button="true">
-          <el-dropdown-item>黄金糕</el-dropdown-item>
+                 class="search"
+                 @click="searchForm()"></el-button>
+      <el-button type="primary"
+                 icon="el-icon-circle-plus">搜索</el-button>
+      <el-button type="danger"
+                 icon="el-icon-circle-plus">删除</el-button>
+      <el-dropdown trigger="click">
+        <el-button type="primary"
+                   icon="el-icon-circle-plus">新增信息</el-button>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item v-for="(item,key) in addedData">{{item}}</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
-      <el-button type="primary">新增信息+</el-button>
     </el-row>
     <el-table :data="list"
               style="width: 100%"
@@ -196,6 +200,8 @@ export default {
           state: true,
         },
       ],
+      addedData: ['增加数据1', '增加数据2', '增加数据3'],
+      searchIput: '',
       searchData: '',
       dialog: false,
       loading: false,
@@ -230,7 +236,6 @@ export default {
             }, 400)
           }, 1000)
           this.tableData[this.from.id - 1] = this.from
-          //console.log(this.tableData[this.from.id-1]);
         })
         .catch((_) => {})
     },
@@ -240,27 +245,29 @@ export default {
       clearTimeout(this.timer)
     },
     handleSelection(selection, row) {
-      console.log(row)
-      console.log(selection.length)
+      //   console.log(row)
+      //   console.log(selection)
+    },
+    searchForm() {
+      this.searchData = this.searchIput
     },
   },
   computed: {
+    //计算属性,表格全局搜索
     list() {
       const filterName = this.searchData.trim().toLowerCase()
       let table = this.$refs.listData
       const filterRE = new RegExp(filterName, 'gi')
       const searchProps = ['name', 'date', 'address', 'phone']
       let rest = this.tableData
-      if (!!filterName) {
-        rest = []
-        this.tableData.forEach((item) => {
-          searchProps.some((val) => {
-            if (item[val].indexOf(filterName) > -1) {
-              return rest.push(item)
-            }
-          })
+      rest = []
+      this.tableData.forEach((item) => {
+        searchProps.some((val) => {
+          if (item[val].indexOf(filterName) > -1) {
+            return rest.push(item)
+          }
         })
-      }
+      })
       return rest
     },
   },
@@ -268,9 +275,8 @@ export default {
 </script>
 
 <style>
-.searchIpu {
+.searchIput {
   width: 20%;
-  float: left;
   /* 上右下左 */
   padding: 0 1.25rem 0.625rem 1.25rem;
 }
