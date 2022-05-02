@@ -13,9 +13,7 @@
           </head-navigation>
         </el-header>
         <!-- 页面主要内容 -->
-        <el-main>
-          <router-view></router-view>
-        </el-main>
+        <router-view></router-view>
       </el-container>
     </el-container>
   </div>

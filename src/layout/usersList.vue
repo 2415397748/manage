@@ -1,6 +1,6 @@
 <template>
-  <el-main style="display:text-left">
-    <el-row style="display: line-block;">
+  <el-main>
+    <el-row style="text-align: left">
       <el-input placeholder="表格数据搜索"
                 class="searchIput"
                 v-model="searchIput"></el-input>
@@ -89,7 +89,7 @@
         <template slot-scope="label">
           <el-button size="mini"
                      @click="handleEdit(label.$index, label.row)"
-                     v-loading="loading">编辑</el-button>
+                     :loading="loading">编辑</el-button>
           <el-button size="mini"
                      type="danger"
                      @click="handleDelete(label.$index, label.row)">删除</el-button>
@@ -210,6 +210,11 @@ export default {
     }
   },
   methods: {
+    //删除表格列
+    handleDelete(index, row) {
+      this.tableData.splice(index, 1)
+    },
+    //表格列数据编辑
     handleEdit(index, row) {
       //console.log(row);
       this.dialog = true
@@ -217,9 +222,6 @@ export default {
       //this.from = row;
       //深拷贝
       this.from = Object.assign({}, row)
-    },
-    handleDelete(index, row) {
-      this.tableData.splice(index, 1)
     },
     handleClose(done) {
       if (this.loading) {
