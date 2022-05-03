@@ -1,44 +1,40 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import index from '../views/index.vue'
+import logIn from '../views/logIn.vue'
 // import HomeView from '../views/HomeView.vue'
 
 Vue.use(VueRouter)
 
 const routes = [{
         name: '登录',
-        path: '/index',
-        component: index,
+        path: '/logIn',
+        component: logIn,
     },
     {
         name: '主页面',
-        path: '/home',
+        path: '/index',
         redirect: (to) => {
-            return { path: '/home/userslist' }
+            return { path: '/index/userslist' }
         },
         // route level code-splitting
         // this generates a separate chunk (about.[hash].js) for this route
         // which is lazy-loaded when the route is visited.
         component: () =>
-            import ( /* webpackChunkName: "about" */ '@/views/home.vue'),
-        children: [
-            // {
-            //   path: 'HeadNavigation',
-            //   name: 'HeadNavigation',
-            //   component: () => import('@/layout/HeadNavigation.vue'),
-            //   meta: { title: 'HeadNavigation'}
-            // },
-            // {
-            //   path: 'LeftNavigation',
-            //   name: 'LeftNavigation',
-            //   component: () => import('@/layout/LeftNavigation.vue'),
-            //   meta: { title: 'LeftNavigation' }
-            // },
+            import ( /* webpackChunkName: "about" */ '@/views/index.vue'),
+        children: [{
+                name: '用户管理',
+                path: 'userControl',
+                component: () =>
+                    import ('@/views/homePage/usersList.vue'),
+                //  meta: {
+                //   requiresAuth: true
+                // },
+            },
             {
-                name: '用户列表',
+                name: '角色列表',
                 path: 'usersList',
                 component: () =>
-                    import ('@/layout/usersList.vue'),
+                    import ('@/views/homePage/roleList.vue'),
                 //  meta: {
                 //   requiresAuth: true
                 // },
@@ -48,24 +44,13 @@ const routes = [{
         //   requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
         //   },
     },
-    // {
-    //   name: 'twoHome',
-    //   path: '/home2',
-    //   // route level code-splitting
-    //   // this generates a separate chunk (about.[hash].js) for this route
-    //   // which is lazy-loaded when the route is visited.
-    //   component: () => import(/* webpackChunkName: "about" */ '../views/head/home2.vue'),
-    // 	// meta: {
-    // 	//   requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
-    // 	//   },
-    // },
 
     //路由重定向，函数中可以加判断方法
     {
         name: 'any',
         path: '*',
         redirect: (to) => {
-            return { path: '/index' }
+            return { path: '/logIn' }
         },
     },
 ]
@@ -87,13 +72,13 @@ router.beforeEach((to, from, next) => {
     // console.log('要访问的路径', to.path);
     // next()
     // 1.如果访问的是登录页面（无需权限），直接放行
-    if (to.path === '/index') next()
+    if (to.path === '/logIn') next()
         // /home
         // 2.如果访问的是有登录权限的页面，先要获取token
     const tokenStr = window.sessionStorage.getItem('token')
         // console.log('tokenStr', tokenStr);
         // 2.1如果token为空，强制跳转到登录页面；否则，直接放行
-    if (!tokenStr) next('/index')
+    if (!tokenStr) next('/logIn')
     next()
 })
 
