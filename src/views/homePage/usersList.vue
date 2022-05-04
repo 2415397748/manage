@@ -98,12 +98,13 @@
       </el-table-column>
     </el-table>
     <el-pagination align='center'
-                   style="padding:20px 30px 0 0;text-align: right;"
+                   style="padding:20px 50px 0 0;text-align: right;"
                    @size-change="handleSizeChange"
                    @current-change="handleCurrentChange"
                    :current-page="currentPage"
                    :page-sizes="[5,10,20,50,100]"
                    :page-size="pageSize"
+                   background
                    layout="total, sizes, prev, pager, next, jumper"
                    :total="tableData.length">
     </el-pagination>
@@ -486,7 +487,7 @@ export default {
     },
     //点击提交编辑数据
     submitForm(form) {
-      //   console.log(this.rules.name)
+      // console.log(form)
       this.$refs.editForm.validate((valid) => {
         if (valid) {
           //关闭抽屉和提交表单
