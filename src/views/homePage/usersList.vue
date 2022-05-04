@@ -63,13 +63,11 @@
                        header-align="center"
                        sortableprop="state">
         <template slot-scope="label">
-          <el-switch style="display: block"
+          <el-switch style="display: block;text-align: center"
                      v-model="label.row.state"
                      active-color="#13ce66"
                      inactive-color="#ff4949"
-                     disabled
-                     active-text="true"
-                     inactive-text="false">
+                     disabled>
           </el-switch>
         </template>
       </el-table-column>
@@ -467,8 +465,8 @@ export default {
       this.tableData.unshift({
         id: this.tableData.length + 1,
         name: '',
-        address: '',
         phone: '',
+        address: '',
         state: true,
         time: currentTime,
       })
@@ -487,7 +485,6 @@ export default {
     },
     //点击提交编辑数据
     submitForm(form) {
-      // console.log(form)
       this.$refs.editForm.validate((valid) => {
         if (valid) {
           //关闭抽屉和提交表单
