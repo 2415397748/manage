@@ -1,7 +1,7 @@
 <template>
   <el-main>
     <!-- 上方搜索以及查询新增 -->
-    <el-row style="text-align: left">
+    <el-row style="text-align: left;padding:20px 0">
       <el-input placeholder="表格数据搜索"
                 class="searchIput"
                 v-model="searchIput"></el-input>
@@ -15,86 +15,90 @@
                  @click="addingList">新增</el-button>
     </el-row>
     <!-- table表格 -->
-    <el-table :data="list.slice((currentPage-1)*pageSize,currentPage*pageSize)"
-              style="width: 100%"
-              border
-              :rules="rules"
-              ref="listData"
-              highlight-current-row
-              @select="handleSelection"
-              max-height="500">
-      <el-table-column type="selection"
-                       width="50"></el-table-column>
-      <el-table-column :label="tables[0]"
-                       center
-                       type="index"
-                       header-align="center"
-                       width="100"></el-table-column>
-      <el-table-column :label="tables[1]"
-                       width="180"
-                       sortable
-                       header-align="center"
-                       :filters="[{text: '2016-05-01', value: '2016-05-01'}, {text: '2016-05-02', value: '2016-05-02'}, {text: '2016-05-03', value: '2016-05-03'}, {text: '2016-05-04', value: '2016-05-04'}]"
-                       prop="name">
-        <template slot-scope="label">
-          <span style="margin-left: 10px">{{ label.row.name }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="tables[2]"
-                       width="250"
-                       sortable
-                       header-align="center"
-                       prop="phone">
-        <template slot-scope="label">
-          <span style="margin-left: 10px">{{ label.row.phone }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="tables[3]"
-                       width="400"
-                       sortable
-                       header-align="center"
-                       prop="address">
-        <template slot-scope="label">
-          <span style="margin-left: 10px">{{ label.row.address }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="tables[4] "
-                       width="150"
-                       header-align="center"
-                       sortableprop="state">
-        <template slot-scope="label">
-          <el-switch style="display: block;text-align: center"
-                     v-model="label.row.state"
-                     active-color="#13ce66"
-                     inactive-color="#ff4949"
-                     disabled>
-          </el-switch>
-        </template>
-      </el-table-column>
-      <el-table-column :label="tables[5]"
-                       width="200"
-                       sortable
-                       header-align="center"
-                       prop="time">
-        <template slot-scope="label">
-          <i class="el-icon-time"></i>
-          <span style="margin-left: 10px">{{ label.row.time }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="操作"
-                       fixed="right"
-                       header-align="center"
-                       min-width="250px">
-        <template slot-scope="label">
-          <el-button size="mini"
-                     @click="handleEdit(label.$index, label.row)"
-                     :loading="loading">编辑</el-button>
-          <el-button size="mini"
-                     type="danger"
-                     @click="handleDelete(label.$index, label.row)">删除</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
+    <div style="padding:0 20px">
+      <el-table :data="list.slice((currentPage-1)*pageSize,currentPage*pageSize)"
+                border
+                :rules="rules"
+                ref="listData"
+                highlight-current-row
+                @select="handleSelection"
+                max-height="500">
+        <el-table-column type="selection"
+                         width="50"></el-table-column>
+        <el-table-column :label="tables[0]"
+                         center
+                         type="index"
+                         header-align="center"
+                         width="100"></el-table-column>
+        <el-table-column :label="tables[1]"
+                         width="150"
+                         sortable
+                         header-align="center"
+                         :filters="[{text: '2016-05-01', value: '2016-05-01'}, {text: '2016-05-02', value: '2016-05-02'}, {text: '2016-05-03', value: '2016-05-03'}, {text: '2016-05-04', value: '2016-05-04'}]"
+                         prop="name">
+          <template slot-scope="label">
+            <span style="margin-left: 10px">{{ label.row.name }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column :label="tables[2]"
+                         width="230"
+                         sortable
+                         header-align="center"
+                         prop="phone">
+          <template slot-scope="label">
+            <span style="margin-left: 10px">{{ label.row.phone }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column :label="tables[3]"
+                         width="400"
+                         sortable
+                         header-align="center"
+                         prop="address">
+          <template slot-scope="label">
+            <span style="margin-left: 10px">{{ label.row.address }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column :label="tables[4] "
+                         width="150"
+                         header-align="center"
+                         sortableprop="state">
+          <template slot-scope="label">
+            <el-switch style="display: block;text-align: center"
+                       v-model="label.row.state"
+                       active-color="#13ce66"
+                       inactive-color="#ff4949"
+                       disabled>
+            </el-switch>
+          </template>
+        </el-table-column>
+        <el-table-column :label="tables[5]"
+                         width="200"
+                         sortable
+                         header-align="center"
+                         prop="time">
+          <template slot-scope="label">
+            <i class="el-icon-time"></i>
+            <span style="margin-left: 10px">{{ label.row.time }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="操作"
+                         fixed="right"
+                         header-align="center"
+                         min-width="250px">
+          <template slot-scope="label">
+            <el-button size="mini"
+                       type="primary"
+                       icon="el-icon-edit"
+                       @click="handleEdit(label.$index, label.row)"
+                       :loading="loading">编辑</el-button>
+            <el-button size="mini"
+                       type="danger"
+                       icon="el-icon-delete"
+                       @click="handleDelete(label.$index, label.row)">删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
     <el-pagination align='center'
                    style="padding:20px 50px 0 0;text-align: right;"
                    @size-change="handleSizeChange"
@@ -122,9 +126,9 @@
                         :prop="Object.keys(form)[i]"
                         :label-width="formLabelWidth"
                         v-for="(item, index,i) in form"
+                        :key="i"
                         v-if=" index !='state' && index !='id' && index !='time'">
-            <el-input v-model="
-                        form[index]"
+            <el-input v-model="form[index]"
                       @keydown.enter.native="submitForm(form)">
             </el-input>
           </el-form-item>
@@ -579,7 +583,7 @@ export default {
 .searchIput {
   width: 20%;
   /* 上右下左 */
-  padding: 0 1.25rem 0.625rem 1.25rem;
+  padding: 0 1.25rem;
 }
 .search {
   position: absolute;

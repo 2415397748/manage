@@ -1,37 +1,74 @@
 <template>
   <div>
-    <vxe-toolbar>
-      <template v-slot:buttons>
-        <vxe-button icon="fa fa-plus"
-                    @click="insertEvent()">新增</vxe-button>
-      </template>
-    </vxe-toolbar>
-    <vxe-toolbar>
-      <template v-slot:buttons>
-        <vxe-button @click="clearDataEvent">清空数据</vxe-button>
-        <vxe-button @click="exportDataEvent">导出数据</vxe-button>
-        <vxe-button @click="importDataEvent">导入数据</vxe-button>
-      </template>
-    </vxe-toolbar>
     <vxe-table highlight-hover-row
                ref="xTable"
-               height="400"
+               border
+               resizable
+               row-key
+               show-overflow
+               highlight-hover-row
+               style="margin:0 20px"
                :export-config="{}"
                :data="tableData">
       <vxe-table-column type="seq"
+                        align="center"
                         width="60"></vxe-table-column>
       <vxe-table-column field="name"
-                        title="Name"></vxe-table-column>
-      <vxe-table-column field="sex"
-                        title="Sex"
-                        :formatter="formatterSex"></vxe-table-column>
-      <vxe-table-column field="age"
-                        title="Age"
+                        align="center"
+                        width="100"
+                        title="姓名">
+      </vxe-table-column>
+      <vxe-table-column field="phone"
+                        width="200"
+                        align="center"
+                        title="联系电话"
                         sortable></vxe-table-column>
+      <vxe-table-column field="describe"
+                        width="400"
+                        align="center"
+                        title="描述"></vxe-table-column>
       <vxe-table-column field="address"
-                        title="Address"
-                        show-overflow></vxe-table-column>
+                        width="150"
+                        align="center"
+                        title="地址"></vxe-table-column>
+      <vxe-table-column field="jurisdiction"
+                        align="center"
+                        title="权限"></vxe-table-column>
+      <vxe-table-column title="操作"
+                        align="center"
+                        min-width="200"
+                        show-overflow>
+        <template v-slot:default="{row}">
+          <a-button icon="edit"
+                    type="primary"
+                    @click="editEvent(row)">
+            编辑</a-button>
+          <a-button icon="
+                    setting"
+                    style="margin-left:10px;background-color: rgba(211, 210, 54, 0.5);">
+            权限分配</a-button>
+          <a-button icon="rest"
+                    style="margin-left:10px;"
+                    type="danger">
+            删除</a-button>
+        </template>
+      </vxe-table-column>
     </vxe-table>
+    <vxe-modal v-model="showEdit"
+               :title="selectRow ? '编辑&保存' : '新增&保存'"
+               width="800"
+               min-width="600"
+               min-height="300"
+               :loading="submitLoading"
+               resize
+               destroy-on-close>
+      <template v-slot>
+        <vxe-form :data="formData"
+                  title-align="right"
+                  title-width="100"
+                  @submit="submitEvent()"></vxe-form>
+      </template>
+    </vxe-modal>
   </div>
 </template>
 <script>
@@ -41,92 +78,77 @@ export default {
       tableData: [
         {
           id: 10001,
-          name: 'Test1',
-          role: 'Develop',
-          sex: '0',
-          age: 28,
-          address: 'test abc',
+          name: '张三',
+          phone: 12312321355,
+          describe: '所有权限都可以使用',
+          address: '上海',
+          jurisdiction: '超级管理员',
         },
         {
           id: 10002,
-          name: 'Test2',
-          role: 'Test',
-          sex: '1',
-          age: 22,
-          address: 'Guangzhou',
+          name: '李四',
+          phone: 4354353451,
+          describe: '拥有权限，但是不可以管理他人权限',
+          address: '重庆',
+          jurisdiction: '管理员',
         },
         {
           id: 10003,
-          name: 'Test3',
-          role: 'PM',
-          sex: '1',
-          age: 32,
-          address: 'Shanghai',
-        },
-        {
-          id: 10004,
-          name: 'Test4',
-          role: 'Designer',
-          sex: '0',
-          age: 23,
-          address: 'test abc',
+          name: '李浩瀚',
+          phone: 677972312312,
+          address: '广州',
+          describe: '拥有所有功能的使用权限',
+          jurisdiction: '运营人员',
         },
         {
           id: 10005,
-          name: 'Test5',
-          role: 'Develop',
-          sex: '0',
-          age: 30,
-          address: 'Shanghai',
+          name: '李魂魂',
+          phone: 3243456767867,
+          address: '湖南',
+          describe: '只有前端页面的权限',
+          jurisdiction: '推广人员',
         },
         {
           id: 10006,
-          name: 'Test6',
-          role: 'Designer',
-          sex: '0',
-          age: 21,
-          address: 'test abc',
-        },
-        {
-          id: 10007,
-          name: 'Test7',
-          role: 'Test',
-          sex: '1',
-          age: 29,
-          address: 'test abc',
-        },
-        {
-          id: 10008,
-          name: 'Test8',
-          role: 'Develop',
-          sex: '1',
-          age: 35,
-          address: 'test abc',
+          name: '肖栗子',
+          phone: 4365767879789890,
+          address: '江西',
+          describe: '前端页面使用权限',
+          jurisdiction: '使用者',
         },
       ],
-      sexList: [
-        { label: '女', value: '0' },
-        { label: '男', value: '1' },
-      ],
+      formData: {},
+      selectRow: {},
+      showEdit: '',
+      submitLoading: false,
     }
   },
   methods: {
-    formatterSex({ cellValue }) {
-      const item = this.sexList.find((item) => item.value === cellValue)
-      return item ? item.label : ''
+    editEvent(row) {
+      this.formData = {
+        name: row.name,
+        phone: row.phone,
+        address: row.address,
+        describe: row.describe,
+        jurisdiction: row.jurisdiction,
+      }
+      this.selectRow = row
+      this.showEdit = true
     },
-    clearDataEvent() {
-      this.tableData = []
-    },
-    exportDataEvent() {
-      this.$refs.xTable.openExport({
-        // 默认勾选源
-        original: true,
-      })
-    },
-    importDataEvent() {
-      this.$refs.xTable.importData()
-    },
+  },
+  submitEvent() {
+    this.submitLoading = true
+    setTimeout(() => {
+      this.submitLoading = false
+      this.showEdit = false
+      if (this.selectRow) {
+        this.$XModal.message({ message: '保存成功', status: 'success' })
+        Object.assign(this.selectRow, this.formData)
+      } else {
+        this.$XModal.message({ message: '新增成功', status: 'success' })
+        this.$refs.xTable.insert(this.formData)
+      }
+    }, 500)
   },
 }
 </script>
