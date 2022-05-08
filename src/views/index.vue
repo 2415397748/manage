@@ -64,24 +64,20 @@ export default {
   },
 }
 </script>
-	
-<style>
 
-body {
-  min-width: 800px;
-  overflow-y: hidden;
-  overflow-x: auto;
-  /*max-width:100%;*/
-}
+<style lang="sass">
+body
+    min-width: 800px
+    overflow-y: hidden
+    overflow-x: auto
 
-.home {
-  /* 这是由 CSS2.1 规定的宽度高度行为。宽度和高度分别应用到元素的内容框。在宽度和高度之外绘制元素的内边距和边框。怪异盒子 */
-  width: 100%;
-  height: 100%;
-}
+.home
+    // 这是由 CSS2.1 规定的宽度高度行为。宽度和高度分别应用到元素的内容框。在宽度和高度之外绘制元素的内边距和边框。怪异盒子
+    width: 100%
+    height: 100%
 
-.el-main {
-  padding: 0;
-  padding-top: 0.625rem;
-}
-</style>
+.el-main
+    padding: 0
+    padding-top: 0.625rem
+</style>>
+

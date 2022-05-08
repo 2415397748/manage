@@ -56,6 +56,7 @@ const routes = [{
 ]
 
 const router = new VueRouter({
+        mode: 'history',
         routes,
     })
     // 解决路由守卫重定向报错问题
