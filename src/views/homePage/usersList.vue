@@ -44,7 +44,8 @@
 					type="index"
 					header-align="center"
 					width="100"
-				></el-table-column>
+				>
+				</el-table-column>
 				<el-table-column
 					:label="tables[1]"
 					width="150"
@@ -663,10 +664,9 @@ export default {
 }
 </script>
 
-<style lang="sass">
+<style lang="sass" scoped>
 .searchIput
     width: 20%
-    //   上右下左
     padding: 0 1.25rem
 
 .search
