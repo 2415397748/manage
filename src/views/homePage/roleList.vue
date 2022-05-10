@@ -123,6 +123,7 @@ export default {
 					id: 10001,
 					name: '张三',
 					phone: 12312321355,
+					sex: 23,
 					describe: '所有权限都可以使用',
 					address: '上海',
 					jurisdiction: '超级管理员',
@@ -131,6 +132,7 @@ export default {
 					id: 10002,
 					name: '李四',
 					phone: 4354353451,
+					sex: 23,
 					describe: '拥有权限，但是不可以管理他人权限',
 					address: '重庆',
 					jurisdiction: '管理员',
@@ -139,6 +141,7 @@ export default {
 					id: 10003,
 					name: '李浩瀚',
 					phone: 677972312312,
+					sex: 23,
 					address: '广州',
 					describe: '拥有所有功能的使用权限',
 					jurisdiction: '运营人员',
@@ -147,6 +150,7 @@ export default {
 					id: 10005,
 					name: '李魂魂',
 					phone: 3243456767867,
+					sex: 23,
 					address: '湖南',
 					describe: '只有前端页面的权限',
 					jurisdiction: '推广人员',
@@ -155,6 +159,7 @@ export default {
 					id: 10006,
 					name: '肖栗子',
 					phone: 4365767879789890,
+					sex: 23,
 					address: '江西',
 					describe: '前端页面使用权限',
 					jurisdiction: '使用者',
@@ -163,15 +168,15 @@ export default {
 			formData: {},
 			formItems: [
 				{
-					title: 'Basic information',
+					title: '基本信息',
 					span: 24,
 					titleAlign: 'left',
 					titleWidth: 200,
-					titlePrefix: { icon: 'fa fa-address-card-o' },
+					titlePrefix: { icon: 'vxe-icon--edit-outline' },
 				},
 				{
 					field: 'name',
-					title: 'Name',
+					title: '姓名',
 					span: 12,
 					itemRender: {
 						name: '$input',
@@ -179,32 +184,17 @@ export default {
 					},
 				},
 				{
-					field: 'nickname',
-					title: 'Nickname',
+					field: 'phone',
+					title: '联系电话',
 					span: 12,
 					itemRender: {
 						name: '$input',
-						props: { placeholder: '请输入昵称' },
-					},
-				},
-				{
-					field: 'role',
-					title: 'Role',
-					span: 12,
-					itemRender: {
-						name: '$input',
-						props: { placeholder: '请输入角色' },
+						props: { placeholder: '请输入电话' },
 					},
 				},
 				{
 					field: 'sex',
-					title: 'Sex',
-					span: 12,
-					itemRender: { name: '$select', options: [] },
-				},
-				{
-					field: 'age',
-					title: 'Age',
+					title: '年龄',
 					span: 12,
 					itemRender: {
 						name: '$input',
@@ -212,15 +202,12 @@ export default {
 					},
 				},
 				{
-					field: 'flag1',
-					title: '是否单身',
+					field: 'describe',
+					title: '描述',
 					span: 12,
 					itemRender: {
-						name: '$radio',
-						options: [
-							{ label: '是', value: 'Y' },
-							{ label: '否', value: 'N' },
-						],
+						name: '$input',
+						props: { placeholder: '请输入描述' },
 					},
 				},
 				{
@@ -239,25 +226,6 @@ export default {
 					},
 				},
 				{
-					title: 'Other information',
-					span: 24,
-					titleAlign: 'left',
-					titleWidth: 200,
-					titlePrefix: {
-						message: '请填写必填项',
-						icon: 'fa fa-info-circle',
-					},
-				},
-				{
-					field: 'num',
-					title: 'Number',
-					span: 12,
-					itemRender: {
-						name: '$input',
-						props: { type: 'number', placeholder: '请输入数值' },
-					},
-				},
-				{
 					field: 'date3',
 					title: 'Date',
 					span: 12,
@@ -268,7 +236,7 @@ export default {
 				},
 				{
 					field: 'address',
-					title: 'Address',
+					title: '描述',
 					span: 24,
 					titleSuffix: {
 						message: '提示信息！！',
@@ -321,13 +289,9 @@ export default {
 		},
 		//编辑数据打开表单
 		editEvent(row) {
-			this.formData = {
-				name: row.name,
-				phone: row.phone,
-				address: row.address,
-				describe: row.describe,
-				jurisdiction: row.jurisdiction,
-			}
+			//用keys来存储row的所有键值
+			// const keys = Object.keys(row)
+			this.formData = Object.assign({}, row)
 			this.selectRow = row
 			this.showEdit = true
 		},
