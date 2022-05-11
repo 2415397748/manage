@@ -1,8 +1,21 @@
 <template>
 	<div>
-		<vxe-toolbar>
+		<!-- 上方搜索以及查询新增 -->
+		<vxe-toolbar style="text-align: left; padding: 2rem 2rem">
 			<template v-slot:buttons>
-				<vxe-button icon="fa fa-plus" @click="insertEvent()"
+				<vxe-input
+					style="width: 20%"
+					placeholder="表格数据搜索"
+					class="searchIput"
+					v-model="searchIput"
+				></vxe-input>
+				<vxe-button
+					icon="vxe-icon--search"
+					status="info"
+					style=""
+				></vxe-button>
+				<vxe-button status="primary" content="查询"></vxe-button>
+				<vxe-button status="danger" @click="insertEvent()"
 					>新增</vxe-button
 				>
 			</template>
@@ -14,7 +27,7 @@
 			resizable
 			row-key
 			highlight-current-row
-			style="margin: 0 20px"
+			style="margin: 0 2rem"
 			:export-config="{}"
 			:data="tableData"
 		>
@@ -48,6 +61,12 @@
 				width="150"
 				align="center"
 				title="地址"
+			></vxe-table-column>
+			<vxe-table-column
+				field="data"
+				width="150"
+				align="center"
+				title="创建日期"
 			></vxe-table-column>
 			<vxe-table-column
 				field="jurisdiction"
@@ -118,6 +137,7 @@
 export default {
 	data() {
 		return {
+			searchIput: '',
 			tableData: [
 				{
 					id: 10001,
@@ -126,6 +146,7 @@ export default {
 					sex: 23,
 					describe: '所有权限都可以使用',
 					address: '上海',
+					data: '2021/10/21',
 					jurisdiction: '超级管理员',
 				},
 				{
@@ -202,8 +223,8 @@ export default {
 					},
 				},
 				{
-					field: 'describe',
-					title: '描述',
+					field: 'address',
+					title: '地址',
 					span: 12,
 					itemRender: {
 						name: '$input',
@@ -211,31 +232,29 @@ export default {
 					},
 				},
 				{
-					field: 'checkedList',
-					title: '可选信息',
-					span: 24,
-					visibleMethod: this.visibleMethod,
-					itemRender: {
-						name: '$checkbox',
-						options: [
-							{ label: '运动、跑步', value: '1' },
-							{ label: '听音乐', value: '2' },
-							{ label: '泡妞', value: '3' },
-							{ label: '吃美食', value: '4' },
-						],
-					},
-				},
-				{
-					field: 'date3',
-					title: 'Date',
+					field: 'jurisdiction',
+					title: '权限',
 					span: 12,
 					itemRender: {
 						name: '$input',
-						props: { type: 'date', placeholder: '请选择日期' },
+						props: { placeholder: '分配权限' },
 					},
 				},
 				{
-					field: 'address',
+					field: 'data',
+					title: '日期',
+					span: 12,
+					itemRender: {
+						name: '$input',
+						props: {
+							type: 'date',
+							placeholder: '请选择日期',
+							// dateConfig: { labelFormat: 'yyyy/MM/dd HH:mm:ss' },
+						},
+					},
+				},
+				{
+					field: 'describe',
 					title: '描述',
 					span: 24,
 					titleSuffix: {
@@ -282,6 +301,7 @@ export default {
 				phone: '',
 				address: '',
 				describe: '',
+				data: '',
 				jurisdiction: '',
 			}
 			this.selectRow = null
@@ -295,7 +315,7 @@ export default {
 			this.selectRow = row
 			this.showEdit = true
 		},
-		//编辑表单处理事件
+		//编辑表单提交事件
 		submitEvent() {
 			this.submitLoading = true
 			setTimeout(() => {

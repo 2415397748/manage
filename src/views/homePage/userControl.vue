@@ -1,5 +1,5 @@
 <template>
-	<el-main>
+	<div>
 		<!-- 上方搜索以及查询新增 -->
 		<el-row style="text-align: left; padding: 20px 0">
 			<el-input
@@ -11,14 +11,8 @@
 				icon="el-icon-search"
 				type="info"
 				class="search"
-				@click="searchForm()"
 			></el-button>
-			<el-button
-				type="primary"
-				style="margin-left: 2rem"
-				@click="getTable"
-				>查询</el-button
-			>
+			<el-button type="primary" style="margin-left: 2rem">查询</el-button>
 			<el-button type="danger" @click="addingList">新增</el-button>
 		</el-row>
 		<!-- table表格 -->
@@ -231,7 +225,7 @@
 				</div>
 			</div>
 		</el-drawer>
-	</el-main>
+	</div>
 </template>
 
 <script>

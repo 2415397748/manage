@@ -25,7 +25,7 @@ const routes = [{
                 name: '用户管理',
                 path: 'userControl',
                 component: () =>
-                    import ('@/views/homePage/usersList.vue'),
+                    import ('@/views/homePage/userControl.vue'),
                 //  meta: {
                 //   requiresAuth: true
                 // },
