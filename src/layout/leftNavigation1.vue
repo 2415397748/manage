@@ -7,6 +7,7 @@
     <!-- default-openeds默认展开 -->
     <el-menu :default-active="defaultActive"
              @select="menuClick">
+      <el-menu-item index="数据汇总"><i class="el-icon-pie-chart"></i>数据汇总</el-menu-item>
       <el-menu-item index="用户管理"><i class="el-icon-user-solid"></i>用户管理</el-menu-item>
       <el-submenu index="权限管理">
         <template slot="title"><i class="el-icon-setting"></i>权限管理</template>
@@ -23,8 +24,8 @@
           <el-menu-item index="商品分类"><i class="el-icon-menu"></i>商品分类</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
+      <el-menu-item index="二维码"><i class="el-icon-full-screen"></i>二维码</el-menu-item>
       <el-menu-item index="订单管理"><i class="el-icon-s-order"></i>订单管理</el-menu-item>
-      <el-menu-item index="数据列表"><i class="el-icon-s-platform"></i>数据列表</el-menu-item>
     </el-menu>
   </el-aside>
 </template>

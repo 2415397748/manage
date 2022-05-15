@@ -6,63 +6,69 @@ import logIn from '../views/logIn.vue'
 Vue.use(VueRouter)
 
 const routes = [{
-        name: '登录',
-        path: '/logIn',
-        component: logIn,
+    name: '登录',
+    path: '/logIn',
+    component: logIn,
+},
+{
+    name: '主页面',
+    path: '/index',
+    redirect: (to) => {
+        return { path: '/index/summarizationData' }
     },
-    {
-        name: '主页面',
-        path: '/index',
-        redirect: (to) => {
-            return { path: '/index/userslist' }
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import( /* webpackChunkName: "about" */ '@/views/index.vue'),
+    children: [
+        {
+            name: '数据汇总',
+            path: 'summarizationData',
+            component: () => import('@/views/homePage/summarizationData.vue'),
+            //  meta: {
+            //   requiresAuth: true
+            // },
         },
-        // route level code-splitting
-        // this generates a separate chunk (about.[hash].js) for this route
-        // which is lazy-loaded when the route is visited.
-        component: () =>
-            import ( /* webpackChunkName: "about" */ '@/views/index.vue'),
-        children: [{
-                name: '用户管理',
-                path: 'userControl',
-                component: () =>
-                    import ('@/views/homePage/userControl.vue'),
-                //  meta: {
-                //   requiresAuth: true
-                // },
-            },
-            {
-                name: '角色列表',
-                path: 'usersList',
-                component: () =>
-                    import ('@/views/homePage/roleList.vue'),
-                //  meta: {
-                //   requiresAuth: true
-                // },
-            },
-        ],
-        // meta: {
-        //   requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
-        //   },
-    },
+        {
+            name: '用户管理',
+            path: 'userControl',
+            component: () => import('@/views/homePage/userControl.vue'),
+            //  meta: {
+            //   requiresAuth: true
+            // },
+        },
+        {
+            name: '角色列表',
+            path: 'roleList',
+            component: () => import('@/views/homePage/roleList.vue'),
+            //  meta: {
+            //   requiresAuth: true
+            // },
+        },
+    ],
+    // meta: {
+    //   requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+    //   },
+},
 
-    //路由重定向，函数中可以加判断方法
-    {
-        name: 'any',
-        path: '*',
-        redirect: (to) => {
-            return { path: '/logIn' }
-        },
+//路由重定向，函数中可以加判断方法
+{
+    name: 'any',
+    path: '*',
+    redirect: (to) => {
+        return { path: '/logIn' }
     },
+},
 ]
 
 const router = new VueRouter({
-        mode: 'history',
-        routes,
-    })
-    // 解决路由守卫重定向报错问题
+    mode: 'history',
+    routes,
+})
+// 解决路由守卫重定向报错问题
 const originalPush = VueRouter.prototype.push
 
-VueRouter.prototype.push = function push(location) {
+VueRouter.prototype.push = function push (location) {
     return originalPush.call(this, location).catch((err) => err)
 }
 
@@ -74,11 +80,11 @@ router.beforeEach((to, from, next) => {
     // next()
     // 1.如果访问的是登录页面（无需权限），直接放行
     if (to.path === '/logIn') next()
-        // /home
-        // 2.如果访问的是有登录权限的页面，先要获取token
+    // /home
+    // 2.如果访问的是有登录权限的页面，先要获取token
     const tokenStr = window.sessionStorage.getItem('token')
-        // console.log('tokenStr', tokenStr);
-        // 2.1如果token为空，强制跳转到登录页面；否则，直接放行
+    // console.log('tokenStr', tokenStr);
+    // 2.1如果token为空，强制跳转到登录页面；否则，直接放行
     if (!tokenStr) next('/logIn')
     next()
 })

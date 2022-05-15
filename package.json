@@ -12,6 +12,7 @@
     "chokidar": "^3.5.3",
     "core-js": "^3.8.3",
     "default-passive-events": "^2.0.0",
+    "echarts": "^5.3.2",
     "element-ui": "^2.4.5",
     "sass": "^1.51.0",
     "sass-loader": "^12.6.0",

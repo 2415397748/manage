@@ -8,6 +8,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 // import 'default-passive-events'
 import components from './layout'
 import 'xe-utils'
+import 'xe-utils'
 import VXETable from 'vxe-table'
 import 'vxe-table/lib/style.css'
 import Antd from 'ant-design-vue'
@@ -26,7 +27,7 @@ Vue.config.productionTip = false
 Vue.prototype.$bus = new Vue()
 
 new Vue({
-    router,
-    store,
-    render: (h) => h(App),
+	router,
+	store,
+	render: (h) => h(App),
 }).$mount('#app')

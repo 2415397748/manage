@@ -59,6 +59,7 @@
 
 <script>
 export default {
+  name: 'logIn',
   data() {
     // 自定义校验规则
     const customEvents = (rule, value, callback) => {

@@ -21,6 +21,7 @@
 </template>
 <script>
 export default {
+  name: 'index',
   data() {
     // const item = {
     //   date: '2016-05-02',
