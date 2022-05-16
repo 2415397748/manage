@@ -44,6 +44,8 @@ export default {
             data: [
               { value: '5', date: '2022-4-8' },
               { value: '8', date: '2023-4-8' },
+              { value: '5', date: '2022-4-8' },
+              { value: '8', date: '2023-4-8' },
             ],
           },
         ],

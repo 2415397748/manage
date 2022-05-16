@@ -21,18 +21,22 @@
       </template>
       <template v-slot:tools>
         <vxe-button circle
-                    icon="vxe-icon--upload"></vxe-button>
+                    icon="vxe-icon--upload"
+                    @click="importDataEvent">导入</vxe-button>
         <vxe-button circle
-                    icon="vxe-icon--download"></vxe-button>
+                    icon="vxe-icon--download"
+                    @click="openExportEvent">导出</vxe-button>
         <vxe-button circle
-                    icon="vxe-icon--print"></vxe-button>
+                    icon="vxe-icon--print"
+                    @click="printEvent">打印</vxe-button>
         <vxe-button circle
-                    icon="vxe-icon--refresh"></vxe-button>
+                    icon="vxe-icon--refresh"
+                    @click="getTable">刷新</vxe-button>
         <vxe-button circle
-                    icon="vxe-icon--zoomin"></vxe-button>
+                    icon="vxe-icon--zoomin">全屏</vxe-button>
         <vxe-button circle
                     style="margin-right:2.5rem"
-                    icon="vxe-icon--menu"></vxe-button>
+                    icon="vxe-icon--menu">列选择</vxe-button>
       </template>
     </vxe-toolbar>
     <vxe-table highlight-hover-row
@@ -534,20 +538,33 @@ export default {
     },
     //删除表格列
     deleteColumns(row) {
-      this.$refs.xTable.remove(row)
-      this.$message({
+      this.$XModal.message({
         message: '删除成功',
-        type: 'success',
-        duration: 1000,
-        showClose: true,
-        center: true,
+        status: 'success',
       })
+      this.$refs.xTable.remove(row)
     },
     //当前页改变时触发 跳转其他页
     //每页条数改变时触发 选择一页显示多少行
     handleCurrentChange({ currentPage, pageSize }) {
       this.pageSize = pageSize
       this.currentPage = currentPage
+    },
+    //打印
+    printEvent() {
+      this.$refs.xTable.print()
+      //打印选中
+      //   this.$refs.xTable.print({
+      //     data: this.$refs.xTable.getCheckboxRecords(),
+      //   })
+    },
+    //导入数据
+    importDataEvent() {
+      this.$refs.xTable.importData()
+    },
+    //导出数据
+    openExportEvent() {
+      this.$refs.xTable.openExport()
     },
   },
   computed: {
