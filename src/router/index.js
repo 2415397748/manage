@@ -23,10 +23,10 @@ const routes = [{
     children: [
         {
             name: '数据汇总',
-            path: 'summarizationData',
-            component: () => import('@/views/homePage/summarizationData.vue'),
+            path: 'dataCollect',
+            component: () => import('@/views/homePage/dataCollect.vue'),
             //  meta: {
-            //   requiresAuth: true
+            //   requiresAuth: true // 添加该字段，表示进入这个路由是需要登录的
             // },
         },
         {
@@ -34,21 +34,50 @@ const routes = [{
             path: 'userControl',
             component: () => import('@/views/homePage/userControl.vue'),
             //  meta: {
-            //   requiresAuth: true
+            //   requiresAuth: true // 添加该字段，表示进入这个路由是需要登录的
             // },
         },
         {
-            name: '角色列表',
-            path: 'roleList',
-            component: () => import('@/views/homePage/roleList.vue'),
+            name: '权限管理',
+            path: 'rightControl',
+            component: () => import('@/views/homePage/rightControl.vue'),
             //  meta: {
-            //   requiresAuth: true
+            //   requiresAuth: true // 添加该字段，表示进入这个路由是需要登录的
+            // },
+        },
+        {
+            name: '二维码',
+            path: 'quickMark',
+            component: () => import('@/views/homePage/quickMark.vue'),
+            //  meta: {
+            //   requiresAuth: true // 添加该字段，表示进入这个路由是需要登录的
+            // },
+        },
+        {
+            name: '商品列表',
+            path: 'commodityList',
+            component: () => import('@/views/homePage/commodityList.vue'),
+            //  meta: {
+            //   requiresAuth: true // 添加该字段，表示进入这个路由是需要登录的
+            // },
+        },
+        {
+            name: '分类管理',
+            path: 'classifyControl',
+            component: () => import('@/views/homePage/classifyControl.vue'),
+            //  meta: {
+            //   requiresAuth: true // 添加该字段，表示进入这个路由是需要登录的
+            // },
+        },
+        {
+            name: '订单管理',
+            path: 'orderControl',
+            component: () => import('@/views/homePage/orderControl.vue'),
+            //  meta: {
+            //   requiresAuth: true // 添加该字段，表示进入这个路由是需要登录的
             // },
         },
     ],
-    // meta: {
-    //   requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
-    //   },
 },
 
 //路由重定向，函数中可以加判断方法

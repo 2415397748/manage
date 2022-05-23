@@ -176,8 +176,8 @@ export default {
             this.$store.dispatch('login', this.form.account)
             setTimeout(() => {
               //替换路由
-              this.$router.push('/index/summarizationData')
-            }, 500)
+              this.$router.push('/index/dataCollect')
+            }, 300)
             // this.$router.push({path: '/home'});
             //let flag = true;
             //this.$store.commit('login',flag);
@@ -282,7 +282,7 @@ export default {
   justify-content: center;
   /* align-items是垂直方向的对齐方式 */
   align-items: center;
-  background-image: url(../img/denglu.jpeg);
+  background-image: url(@/img/logIn.jpeg);
   background-size: 100%;
 }
 

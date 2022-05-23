@@ -1,11 +1,16 @@
 <template>
   <div style="text-align: left">
     <!-- 上方搜索以及查询新增 -->
-    <vxe-toolbar style="padding: 2.5rem 0">
+    <vxe-toolbar style="padding: 2.5rem 2rem;"
+                 :import="true"
+                 :export="true"
+                 :print="true"
+                 :refresh="{query:getTable}"
+                 :custom="true">
       <template v-slot:buttons>
         <el-input placeholder="表格数据搜索"
                   class="searchInput"
-                  style="width: 25%; margin: 0 2rem"
+                  style="width: 25%"
                   v-model="searchInput"></el-input>
         <el-button icon="el-icon-search"
                    type="info"
@@ -14,29 +19,10 @@
                    style="position: absolute; right: calc(75% + 2.5rem)"></el-button>
         <vxe-button status="primary"
                     @click="getTable"
-                    style="height: 40px">查询数据库</vxe-button>
+                    style="height: 40px;margin-left:1rem">查询数据库</vxe-button>
         <vxe-button status="danger"
                     @click="insertEvent()"
                     style="height: 40px">新增数据</vxe-button>
-      </template>
-      <template v-slot:tools>
-        <vxe-button circle
-                    icon="vxe-icon--upload"
-                    @click="importDataEvent">导入</vxe-button>
-        <vxe-button circle
-                    icon="vxe-icon--download"
-                    @click="openExportEvent">导出</vxe-button>
-        <vxe-button circle
-                    icon="vxe-icon--print"
-                    @click="printEvent">打印</vxe-button>
-        <vxe-button circle
-                    icon="vxe-icon--refresh"
-                    @click="getTable">刷新</vxe-button>
-        <vxe-button circle
-                    icon="vxe-icon--zoomin">全屏</vxe-button>
-        <vxe-button circle
-                    style="margin-right:2.5rem"
-                    icon="vxe-icon--menu">列选择</vxe-button>
       </template>
     </vxe-toolbar>
     <vxe-table highlight-hover-row
@@ -44,11 +30,17 @@
                border
                resizable
                row-key
+               id="xTable"
                highlight-current-row
                style="margin: 0 2rem"
                max-height="500"
                :export-config="{}"
+               :import-config="{}"
+               :custom-config="{storage: true}"
                :data="list.slice((currentPage - 1) * pageSize,currentPage * pageSize)">
+      <vxe-table-column type="checkbox"
+                        align="checkbox"
+                        width="50"></vxe-table-column>
       <vxe-table-column type="seq"
                         align="center"
                         width="60"></vxe-table-column>
@@ -61,7 +53,11 @@
                         width="200"
                         align="center"
                         title="联系电话"
-                        sortable></vxe-table-column>
+                        sortable>
+        <template v-slot:default="{row}">
+          <span>{{row.phone}}</span>
+        </template>
+      </vxe-table-column>
       <vxe-table-column field="describe"
                         width="380"
                         align="center"
@@ -103,7 +99,6 @@
                :page-sizes="[5, 10, 20, 50, 100]"
                :page-size="pageSize"
                background
-               :pager-count="5"
                :layouts="layouts"
                :total="tableData.length">
       <template v-slot:left>
@@ -361,7 +356,7 @@ export default {
         },
       ],
       currentPage: 1,
-      pageSize: 5,
+      pageSize: 10,
       layouts: [
         'PrevJump',
         'PrevPage',

@@ -27,7 +27,7 @@ export default {
       let options = {
         title: {
           //标题
-          text: 'ECharts 入门示例', //主标题文本
+          text: 'ECharts', //主标题文本
           left: 150,
           top: 10,
         },
