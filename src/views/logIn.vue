@@ -53,6 +53,9 @@
                    @click="submitForm(form.account,form.password)">登录</el-button>
         <el-button @click="resetForm(form.account, form.password)">注册</el-button>
       </el-form-item>
+      <el-form-item>
+        <h3>账号:admin&ensp;&ensp;密码:admin123</h3>
+      </el-form-item>
     </el-form>
   </div>
 </template>
@@ -116,7 +119,7 @@ export default {
           },
           {
             min: 5,
-            max: 10,
+            max: 8,
             message: '长度在 5 到 10 个字符',
             trigger: 'blur',
           },
@@ -149,11 +152,23 @@ export default {
       },
     }
   },
-  created() {},
+
+  created() {
+    //初始化验证码
+    this.refreshCode()
+    //验证是否登录过
+    // this.verifyLogin()
+  },
   methods: {
+    //验证是否登录过
+    verifyLogin() {
+      if (this.$store.state.token) {
+        this.$router.push('/index/dataCollect')
+      }
+    },
     submitForm(...age) {
       //登录判断是否是存在的账号密码
-      const yes = this.$data.MySQL.filter(
+      const account = this.$data.MySQL.filter(
         (items) => items.account === age[0] && items.password === age[1]
       )
       //this.$refs是一个对象，持有当前组件中注册过 ref特性的所有 DOM 元素和子组件实例
@@ -162,7 +177,7 @@ export default {
         .validate()
         .then((res) => {
           // $message全局方法 ,消息提示
-          if (yes.length > 0) {
+          if (account.length > 0) {
             this.$message({
               message: '登录成功',
               type: 'success',
@@ -252,17 +267,13 @@ export default {
       this.identifyCode = ''
       this.makeCode(this.identifyCodes, 4)
     },
+    //验证码----end
     makeCode(o, l) {
       for (let i = 0; i < l; i++) {
         this.identifyCode +=
           this.identifyCodes[this.randomNum(0, this.identifyCodes.length)]
       }
     },
-    //验证码----end
-  },
-
-  created() {
-    this.refreshCode() //初始化验证码
   },
 
   mounted() {
@@ -288,13 +299,9 @@ export default {
 
 .el-form {
   background-color: #ffffff;
-  padding-right: 8rem;
+  padding-right: 10rem;
   padding-top: 5rem;
-  padding-bottom: 2.5rem;
   line-height: 2.5rem;
-}
-.VerificationCode {
-  text-align: center;
 }
 .VerificationCode div:nth-child(1),
 .VerificationCode div:nth-child(2) {
