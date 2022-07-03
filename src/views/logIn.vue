@@ -204,6 +204,7 @@ export default {
               showClose: true,
               center: true,
             })
+            this.form.verifyCode = ''
           }
         })
         .catch((err) => {
@@ -214,6 +215,7 @@ export default {
             showClose: true,
             center: true,
           })
+          this.form.verifyCode = ''
         })
       this.refreshCode()
     },
@@ -231,6 +233,7 @@ export default {
               showClose: true,
               center: true,
             })
+            this.form.verifyCode = ''
           } else {
             const Newaccount = {
               account: age[0],
@@ -244,6 +247,7 @@ export default {
               showClose: true,
               center: true,
             })
+            this.form.verifyCode = ''
           }
         })
         .catch((err) => {
@@ -254,6 +258,7 @@ export default {
             showClose: true,
             center: true,
           })
+          this.form.verifyCode = ''
         })
       this.refreshCode()
     },
@@ -322,3 +327,4 @@ export default {
   font-size: 3rem;
 }
 </style>
+

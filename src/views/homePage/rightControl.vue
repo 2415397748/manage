@@ -34,19 +34,23 @@
                highlight-current-row
                style="margin: 0 2rem"
                max-height="500"
-               :export-config="{}"
-               :import-config="{}"
+               :import-config="tableImport"
+               :export-config="tableExport"
                :custom-config="{storage: true}"
                :data="list.slice((currentPage - 1) * pageSize,currentPage * pageSize)">
       <vxe-table-column type="checkbox"
-                        align="checkbox"
-                        width="50"></vxe-table-column>
+                        align="center"
+                        title="选中"
+                        width="100"></vxe-table-column>
       <vxe-table-column type="seq"
                         align="center"
+                        title="序号"
                         width="60"></vxe-table-column>
       <vxe-table-column field="name"
                         align="center"
                         width="100"
+                        :filters="[{data: {vals: [], sVal: ''}}]"
+                        :filter-render="{name: 'FilterContent',props:{options:[]}}"
                         title="姓名">
       </vxe-table-column>
       <vxe-table-column field="phone"
@@ -85,7 +89,8 @@
                     @click="editEvent(row)">编辑</a-button>
           <a-button icon="setting"
                     style="margin-left: 10px;tableData
-							background-color: rgba(211, 210, 54, 0.5);"> 权限分配</a-button>
+							background-color: rgba(211, 210, 54, 0.5);"
+                    @click="editEvent(row)"> 权限分配</a-button>
           <a-button icon="rest"
                     style="margin-left: 10px"
                     type="danger"
@@ -113,7 +118,7 @@
       </template>
     </vxe-pager>
     <vxe-modal v-model="showEdit"
-               :title="formData ? '编辑&保存' : '新增&保存'"
+               :title="formData.name ? '编辑' : '新增'"
                width="800"
                min-width="600"
                min-height="300"
@@ -136,7 +141,31 @@
   </div>
 </template>
 <script>
+import Vue from 'vue'
 import XEUtils from 'xe-utils'
+import VXETable from 'vxe-table'
+
+// 创建一个支持列内容的筛选
+VXETable.renderer.add('FilterContent', {
+  // 不显示底部按钮，使用自定义的按钮
+  isFooter: false,
+  // 筛选模板
+  renderFilter(h, renderOpts, params) {
+    return [<filter-content params={params}></filter-content>]
+  },
+  // 重置数据方法
+  filterResetMethod({ options }) {
+    options.forEach((option) => {
+      option.data = { vals: [], sVal: '' }
+    })
+  },
+  // 筛选数据方法
+  filterMethod({ option, row, column }) {
+    const { vals } = option.data
+    const cellValue = row[column.property]
+    return vals.includes(cellValue)
+  },
+})
 
 export default {
   name: 'roleList',
@@ -355,6 +384,16 @@ export default {
           jurisdiction: '使用者',
         },
       ],
+      tableImport: {
+        // 自定义类型
+        types: ['xlsx'],
+      },
+      tableExport: {
+        // 默认选中类型
+        type: 'xlsx',
+        // 自定义类型
+        types: ['xlsx', 'csv', 'html', 'xml', 'txt'],
+      },
       currentPage: 1,
       pageSize: 10,
       layouts: [
@@ -509,13 +548,13 @@ export default {
         this.submitLoading = false
         this.showEdit = false
         if (this.selectRow) {
-          this.$XModal.message({
+          VXETable.modal.message({
             message: '编辑成功',
             status: 'success',
           })
           Object.assign(this.selectRow, this.formData)
         } else {
-          this.$XModal.message({
+          VXETable.modal.message({
             message: '新增成功',
             status: 'success',
           })
@@ -547,11 +586,11 @@ export default {
     },
     //打印
     printEvent() {
-      this.$refs.xTable.print()
+      //   this.$refs.xTable.print()
       //打印选中
-      //   this.$refs.xTable.print({
-      //     data: this.$refs.xTable.getCheckboxRecords(),
-      //   })
+      this.$refs.xTable.print({
+        data: this.$refs.xTable.getCheckboxRecords(),
+      })
     },
     //导入数据
     importDataEvent() {

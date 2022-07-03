@@ -77,6 +77,14 @@ const routes = [{
             //   requiresAuth: true // 添加该字段，表示进入这个路由是需要登录的
             // },
         },
+        {
+            name: 'post请求',
+            path: 'post',
+            component: () => import('@/views/homePage/post.vue'),
+            //  meta: {
+            //   requiresAuth: true // 添加该字段，表示进入这个路由是需要登录的
+            // },
+        },
     ],
 },
 

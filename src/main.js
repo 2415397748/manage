@@ -15,6 +15,8 @@ import 'vxe-table/lib/style.css'
 import Antd from 'ant-design-vue'
 import 'ant-design-vue/dist/antd.css'
 Vue.config.productionTip = false
+import axios from 'axios';
+Vue.prototype.$axios = axios;
 
 
 Vue.use(Antd)

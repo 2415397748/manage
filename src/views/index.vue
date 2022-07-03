@@ -66,7 +66,7 @@ export default {
 }
 </script>
 
-<style lang="sass">
+<style lang="sass" scoped>
 body
     min-width: 800px
     overflow-y: hidden

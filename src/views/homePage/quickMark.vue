@@ -2,7 +2,7 @@
   <div>
     <a-form :layout="formLayout"
             style="text-align: center;padding:20px 10%">
-      <a-form-item label="表单布局"
+      <!-- <a-form-item label="表单布局"
                    :label-col="formItemLayout.labelCol"
                    :wrapper-col="formItemLayout.wrapperCol">
         <a-radio-group default-value="horizontal"
@@ -17,7 +17,7 @@
             行内
           </a-radio-button>
         </a-radio-group>
-      </a-form-item>
+      </a-form-item> -->
       <a-form-item label="店铺名称"
                    :label-col="formItemLayout.labelCol"
                    :wrapper-col="formItemLayout.wrapperCol">
@@ -126,7 +126,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .ant-upload-select-picture-card i {
   font-size: 32px;
   color: #999;
@@ -135,5 +135,9 @@ export default {
 .ant-upload-select-picture-card .ant-upload-text {
   margin-top: 8px;
   color: #666;
+}
+
+div >>> .ant-form .ant-upload-list-item-info::before {
+  left: 0;
 }
 </style>

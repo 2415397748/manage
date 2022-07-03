@@ -19,6 +19,7 @@
         </el-menu-item-group>
       </el-submenu>
       <el-menu-item index="orderControl"><i class="el-icon-s-order"></i>订单管理</el-menu-item>
+      <el-menu-item index="post"><i class="el-icon-upload"></i>post请求</el-menu-item>
     </el-menu>
   </el-aside>
 </template>
