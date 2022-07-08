@@ -8,8 +8,8 @@
     <el-menu :default-active="defaultActive"
              @select="menuClick">
       <el-menu-item index="dataCollect"><i class="el-icon-pie-chart"></i>数据汇总</el-menu-item>
-      <el-menu-item index="userControl"><i class="el-icon-user-solid"></i>用户管理</el-menu-item>
       <el-menu-item index="rightControl"><i class="el-icon-setting"></i>权限管理</el-menu-item>
+      <el-menu-item index="userControl"><i class="el-icon-user-solid"></i>用户管理</el-menu-item>
       <el-menu-item index="quickMark"><i class="el-icon-full-screen"></i>二维码</el-menu-item>
       <el-submenu index="商品管理">
         <template slot="title"><i class="el-icon-s-goods"></i>商品管理</template>

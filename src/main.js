@@ -27,7 +27,7 @@ Vue.use(ElementUI)
 Vue.use(layout)
 Vue.use(components)
 
-
+//建立的组件通讯通道
 Vue.prototype.$bus = new Vue()
 
 new Vue({

@@ -9,6 +9,7 @@ export default new Vuex.Store({
     state: {
         // 登录token
         token: '',
+        timerSwitch: false
     },
     //getters:可以认为是 store 的计算属性，就像计算属性一样，getter 的返回值会根据它的依赖被缓存起来，
     //且只有当它的依赖值发生了改变才会被重新计算，接受 state 作为其第一个参数
@@ -26,16 +27,32 @@ export default new Vuex.Store({
             window.sessionStorage.removeItem('token')
             state.token = ''
         },
+        timerIns: (state) => {
+            // window.sessionStorage.removeItem('timerSwitch', JSON.stringify(true))
+            state.timerSwitch = true
+        },
+        timerOuts: (state) => {
+            // window.sessionStorage.removeItem('timerSwitch', JSON.stringify(false))
+            state.timerSwitch = false
+        },
     },
     //和mutation的功能大致相同，不同之处在于 ==》
     //1. Action 提交的是 mutation，而不是直接变更状态。 2. Action 可以包含任意异步操作。
     actions: {
+        //登录状态
         login: (context, token) => {
             //context 就是当前的vuex实例对象；它拥有实例的所有方法
             context.commit('logins', token)
         },
         logout: (context) => {
             context.commit('logouts')
+        },
+        //锁屏状态
+        timerIn: (context) => {
+            context.commit('timerIns')
+        },
+        timerOut: (context) => {
+            context.commit('timerOuts')
         },
     },
     modules: {},

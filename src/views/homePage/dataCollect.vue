@@ -16,7 +16,7 @@ export default {
   created() {
     setTimeout(() => {
       this.getChart()
-    }, 1000)
+    }, 500)
   },
   methods: {
     getChart() {

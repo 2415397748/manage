@@ -192,7 +192,7 @@ export default {
             setTimeout(() => {
               //替换路由
               this.$router.push('/index/dataCollect')
-            }, 300)
+            }, 200)
             // this.$router.push({path: '/home'});
             //let flag = true;
             //this.$store.commit('login',flag);
@@ -288,7 +288,7 @@ export default {
   },
 }
 </script>
-<style>
+<style scoped lang="scss">
 .table {
   width: 100%;
   height: 100%;

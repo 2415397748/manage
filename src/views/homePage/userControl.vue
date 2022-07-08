@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- 上方搜索以及查询新增 -->
-    <el-row style="text-align: left; padding: 20px 0">
+    <el-row style="text-align: left;padding: 1rem 0;">
       <el-input placeholder="表格数据搜索"
                 class="searchInput"
                 v-model="searchInput"></el-input>
@@ -437,7 +437,7 @@ export default {
       pageSize: 10,
       selectRow: {}, //编辑的列
       form: {}, //深拷贝保存编辑的列数据
-      tables: ['序号', '姓名', '手机号', '地址', '在线状态', '日期'],
+      tables: ['序号', '姓名', '手机号', '地址', '在线状态', '创建日期'],
       searchInput: '',
       searchData: '',
       dialog: false,

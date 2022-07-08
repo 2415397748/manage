@@ -2,7 +2,9 @@
   <div class="home">
     <!-- <el-button @click="skip()">点我显示head.value</el-button> -->
     <el-container style="height: 100%; border: 1px solid #eee">
-      <component :is="head.value"></component>
+      <!-- 左侧导航栏 -->
+      <component :is="head.value"
+                 :key="head.value"></component>
 
       <el-container>
         <!-- 上方导航栏 -->

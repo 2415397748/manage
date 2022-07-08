@@ -1,12 +1,12 @@
 <template>
   <div style="text-align: left">
     <!-- 上方搜索以及查询新增 -->
-    <vxe-toolbar style="padding: 2.5rem 2rem;"
-                 :import="true"
-                 :export="true"
-                 :print="true"
+    <vxe-toolbar style="padding: 1rem 2rem;"
+                 import
+                 export
+                 print
                  :refresh="{query:getTable}"
-                 :custom="true">
+                 custom>
       <template v-slot:buttons>
         <el-input placeholder="表格数据搜索"
                   class="searchInput"
@@ -37,20 +37,20 @@
                :import-config="tableImport"
                :export-config="tableExport"
                :custom-config="{storage: true}"
+               :print-config="{}"
                :data="list.slice((currentPage - 1) * pageSize,currentPage * pageSize)">
       <vxe-table-column type="checkbox"
                         align="center"
-                        title="选中"
-                        width="100"></vxe-table-column>
+                        width="50"></vxe-table-column>
       <vxe-table-column type="seq"
                         align="center"
                         title="序号"
                         width="60"></vxe-table-column>
       <vxe-table-column field="name"
                         align="center"
-                        width="100"
+                        width="150"
                         :filters="[{data: {vals: [], sVal: ''}}]"
-                        :filter-render="{name: 'FilterContent',props:{options:[]}}"
+                        :filter-render="{name: 'FilterContent',props:{options:[1]}}"
                         title="姓名">
       </vxe-table-column>
       <vxe-table-column field="phone"
@@ -81,16 +81,12 @@
       <vxe-table-column title="操作"
                         align="center"
                         fixed=right
-                        width="340"
+                        width="250"
                         show-overflow>
         <template v-slot:default="{ row }">
           <a-button icon="edit"
                     type="primary"
                     @click="editEvent(row)">编辑</a-button>
-          <a-button icon="setting"
-                    style="margin-left: 10px;tableData
-							background-color: rgba(211, 210, 54, 0.5);"
-                    @click="editEvent(row)"> 权限分配</a-button>
           <a-button icon="rest"
                     style="margin-left: 10px"
                     type="danger"
@@ -106,11 +102,13 @@
                background
                :layouts="layouts"
                :total="tableData.length">
-      <template v-slot:left>
+      <template v-slot:left
+                @click="batchDelete()">
         <vxe-button size="small">
-          <template v-slot>更多操作</template>
-          <template v-slot:dropdowns>
-            <vxe-button type="text">批量修改</vxe-button>
+          <template #default>更多操作</template>
+          <template #dropdowns>
+            <vxe-button type="text"
+                        @click="batchDelete()">批量修改</vxe-button>
             <vxe-button type="text">批量管理</vxe-button>
             <vxe-button type="text">批量删除</vxe-button>
           </template>
@@ -118,7 +116,7 @@
       </template>
     </vxe-pager>
     <vxe-modal v-model="showEdit"
-               :title="formData.name ? '编辑' : '新增'"
+               :title="formData.id ? '编辑' : '新增'"
                width="800"
                min-width="600"
                min-height="300"
@@ -141,9 +139,11 @@
   </div>
 </template>
 <script>
-import Vue from 'vue'
 import XEUtils from 'xe-utils'
 import VXETable from 'vxe-table'
+//导出vxe-table导出XLSX第三方库
+import VXETablePluginExportXLSX from 'vxe-table-plugin-export-xlsx'
+VXETable.use(VXETablePluginExportXLSX)
 
 // 创建一个支持列内容的筛选
 VXETable.renderer.add('FilterContent', {
@@ -386,7 +386,7 @@ export default {
       ],
       tableImport: {
         // 自定义类型
-        types: ['xlsx'],
+        types: ['xlsx', 'csv', 'html', 'xml', 'txt'],
       },
       tableExport: {
         // 默认选中类型
@@ -456,8 +456,17 @@ export default {
           title: '权限',
           span: 12,
           itemRender: {
-            name: '$input',
-            props: { placeholder: '分配权限' },
+            name: '$select',
+            props: {
+              placeholder: '分配权限',
+              options: [
+                { label: '超级管理员', value: '超级管理员' },
+                { label: '管理员', value: '管理员' },
+                { label: '运营人员', value: '运营人员' },
+                { label: '推广人员', value: '推广人员' },
+                { label: '使用者', value: '使用者' },
+              ],
+            },
           },
         },
         {
@@ -548,17 +557,17 @@ export default {
         this.submitLoading = false
         this.showEdit = false
         if (this.selectRow) {
+          Object.assign(this.selectRow, this.formData)
           VXETable.modal.message({
             message: '编辑成功',
             status: 'success',
           })
-          Object.assign(this.selectRow, this.formData)
         } else {
+          this.tableData.unshift(this.formData)
           VXETable.modal.message({
             message: '新增成功',
             status: 'success',
           })
-          this.$refs.xTable.insert(this.formData)
         }
       }, 500)
     },
@@ -584,21 +593,9 @@ export default {
       this.pageSize = pageSize
       this.currentPage = currentPage
     },
-    //打印
-    printEvent() {
-      //   this.$refs.xTable.print()
-      //打印选中
-      this.$refs.xTable.print({
-        data: this.$refs.xTable.getCheckboxRecords(),
-      })
-    },
-    //导入数据
-    importDataEvent() {
-      this.$refs.xTable.importData()
-    },
-    //导出数据
-    openExportEvent() {
-      this.$refs.xTable.openExport()
+    //批量删除
+    batchDelete() {
+      let getCheckboxRecords = this.$refs.xTable.getCheckboxRecords()
     },
   },
   computed: {
