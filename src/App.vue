@@ -7,7 +7,7 @@
       {{date}}
     </div>
     <!-- 锁屏 -->
-    <el-dialog title="设置密码"
+    <el-dialog title="设置锁屏密码"
                :visible.sync="centerDialogVisible"
                width="30%"
                center
@@ -22,23 +22,24 @@
       </span>
     </el-dialog>
     <!-- 解锁 -->
-    <!-- <el-dialog title="请输入密码"
-               :visible.sync="DialogVisible"
+    <el-dialog title="请输入锁屏密码"
+               :visible.sync="centerDialogVisible1"
                width="30%"
                center
-               :before-close="handleClose">
-      <el-input v-model="password"
+               :before-close="handleClose1">
+      <el-input v-model="password1"
                 placeholder=""></el-input>
       <span slot="footer"
             class="dialog-footer">
-        <el-button @click="centerDialogVisible = false">取 消</el-button>
+        <el-button @click="centerDialogVisible1 = false">取 消</el-button>
         <el-button type="primary"
-                   @click="handleClose">确 定</el-button>
+                   @click="handleClose1">确 定</el-button>
+        <el-button type="danger"
+                   @click="prompt">忘 记 密 码</el-button>
       </span>
-    </el-dialog> -->
+    </el-dialog>
   </div>
 </template>
-
 <script>
 export default {
   name: 'App',
@@ -48,12 +49,15 @@ export default {
       timerSwitch: false,
       timer: null,
       centerDialogVisible: false,
+      centerDialogVisible1: false,
       password: '',
+      password1: '',
     }
   },
   mounted() {
     //组件传值方式开启关闭锁屏
     this.$bus.$on('lockScreen', () => {
+      this.password1 = ''
       this.centerDialogVisible = true
     })
   },
@@ -103,13 +107,6 @@ export default {
         _this.timeFormate(new Date()) // 修改数据date
       }, 1000)
     },
-    //关闭锁屏并且关闭定时器
-    unlocking() {
-      //   this.$store.dispatch('timerOut')
-      this.timerSwitch = false
-      clearInterval(this.timer)
-      this.timer = null
-    },
     handleClose(done) {
       this.$confirm('确定要提交吗？')
         .then((_) => {
@@ -129,6 +126,42 @@ export default {
           }
         })
         .catch((_) => {})
+    },
+    //关闭锁屏并且关闭定时器
+    unlocking() {
+      this.password1 = ''
+      this.centerDialogVisible1 = true
+    },
+    handleClose1(done) {
+      this.$confirm('确定要提交吗？')
+        .then((_) => {
+          if (this.password1 == this.password) {
+            //   this.$store.dispatch('timerOut')
+            this.centerDialogVisible1 = false
+            this.timerSwitch = false
+            clearInterval(this.timer)
+            this.timer = null
+            done()
+          } else {
+            this.$message({
+              message: '密码错误',
+              type: 'warning',
+              duration: 1000,
+              showClose: true,
+              center: true,
+            })
+          }
+        })
+        .catch((_) => {})
+    },
+    prompt() {
+      this.$message({
+        message: '密码为' + this.password,
+        type: 'warning',
+        duration: 1000,
+        showClose: true,
+        center: true,
+      })
     },
   },
   beforeDestroy() {
