@@ -5,97 +5,98 @@ import logIn from '../views/logIn.vue'
 
 Vue.use(VueRouter)
 
-const routes = [{
-    name: '登录',
-    path: '/logIn',
-    component: logIn,
-},
-{
-    name: '主页面',
-    path: '/index',
-    redirect: (to) => {
-        return { path: '/index/summarizationData' }
+const routes = [
+    {
+        name: '登录',
+        path: '/logIn',
+        component: logIn,
     },
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import( /* webpackChunkName: "about" */ '@/views/index.vue'),
-    children: [
-        {
-            name: '数据汇总',
-            path: 'dataCollect',
-            component: () => import('@/views/homePage/dataCollect.vue'),
-            //  meta: {
-            //   requiresAuth: true // 添加该字段，表示进入这个路由是需要登录的
-            // },
+    {
+        name: '主页面',
+        path: '/index',
+        redirect: (to) => {
+            return { path: '/index/summarizationData' }
         },
-        {
-            name: '用户管理',
-            path: 'userControl',
-            component: () => import('@/views/homePage/userControl.vue'),
-            //  meta: {
-            //   requiresAuth: true // 添加该字段，表示进入这个路由是需要登录的
-            // },
-        },
-        {
-            name: '权限管理',
-            path: 'rightControl',
-            component: () => import('@/views/homePage/rightControl.vue'),
-            //  meta: {
-            //   requiresAuth: true // 添加该字段，表示进入这个路由是需要登录的
-            // },
-        },
-        {
-            name: '二维码',
-            path: 'quickMark',
-            component: () => import('@/views/homePage/quickMark.vue'),
-            //  meta: {
-            //   requiresAuth: true // 添加该字段，表示进入这个路由是需要登录的
-            // },
-        },
-        {
-            name: '商品列表',
-            path: 'commodityList',
-            component: () => import('@/views/homePage/commodityList.vue'),
-            //  meta: {
-            //   requiresAuth: true // 添加该字段，表示进入这个路由是需要登录的
-            // },
-        },
-        {
-            name: '分类管理',
-            path: 'classifyControl',
-            component: () => import('@/views/homePage/classifyControl.vue'),
-            //  meta: {
-            //   requiresAuth: true // 添加该字段，表示进入这个路由是需要登录的
-            // },
-        },
-        {
-            name: '订单管理',
-            path: 'orderControl',
-            component: () => import('@/views/homePage/orderControl.vue'),
-            //  meta: {
-            //   requiresAuth: true // 添加该字段，表示进入这个路由是需要登录的
-            // },
-        },
-        {
-            name: 'post请求',
-            path: 'post',
-            component: () => import('@/views/homePage/post.vue'),
-            //  meta: {
-            //   requiresAuth: true // 添加该字段，表示进入这个路由是需要登录的
-            // },
-        },
-    ],
-},
+        // route level code-splitting
+        // this generates a separate chunk (about.[hash].js) for this route
+        // which is lazy-loaded when the route is visited.
+        component: () => import( /* webpackChunkName: "about" */ '@/views/index.vue'),
+        children: [
+            {
+                name: '数据汇总',
+                path: 'dataCollect',
+                component: () => import('@/views/homePage/dataCollect.vue'),
+                //  meta: {
+                //   requiresAuth: true // 添加该字段，表示进入这个路由是需要登录的
+                // },
+            },
+            {
+                name: '用户管理',
+                path: 'userControl',
+                component: () => import('@/views/homePage/userControl.vue'),
+                //  meta: {
+                //   requiresAuth: true // 添加该字段，表示进入这个路由是需要登录的
+                // },
+            },
+            {
+                name: '权限管理',
+                path: 'rightControl',
+                component: () => import('@/views/homePage/rightControl.vue'),
+                //  meta: {
+                //   requiresAuth: true // 添加该字段，表示进入这个路由是需要登录的
+                // },
+            },
+            {
+                name: '二维码',
+                path: 'quickMark',
+                component: () => import('@/views/homePage/quickMark.vue'),
+                //  meta: {
+                //   requiresAuth: true // 添加该字段，表示进入这个路由是需要登录的
+                // },
+            },
+            {
+                name: '商品列表',
+                path: 'commodityList',
+                component: () => import('@/views/homePage/commodityList.vue'),
+                //  meta: {
+                //   requiresAuth: true // 添加该字段，表示进入这个路由是需要登录的
+                // },
+            },
+            {
+                name: '分类管理',
+                path: 'classifyControl',
+                component: () => import('@/views/homePage/classifyControl.vue'),
+                //  meta: {
+                //   requiresAuth: true // 添加该字段，表示进入这个路由是需要登录的
+                // },
+            },
+            {
+                name: '订单管理',
+                path: 'orderControl',
+                component: () => import('@/views/homePage/orderControl.vue'),
+                //  meta: {
+                //   requiresAuth: true // 添加该字段，表示进入这个路由是需要登录的
+                // },
+            },
+            {
+                name: 'post请求',
+                path: 'post',
+                component: () => import('@/views/homePage/post.vue'),
+                //  meta: {
+                //   requiresAuth: true // 添加该字段，表示进入这个路由是需要登录的
+                // },
+            },
+        ],
+    },
 
-//路由重定向，函数中可以加判断方法
-{
-    name: 'any',
-    path: '*',
-    redirect: (to) => {
-        return { path: '/logIn' }
+    //路由重定向，函数中可以加判断方法
+    {
+        name: 'any',
+        path: '*',
+        redirect: (to) => {
+            return { path: '/logIn' }
+        },
     },
-},
 ]
 
 const router = new VueRouter({
