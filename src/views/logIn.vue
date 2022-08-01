@@ -288,6 +288,14 @@ export default {
   },
 }
 </script>
+<style>
+/* 加载样式 */
+.el-loading-spinner {
+  font-size: 12.5rem;
+  position: relative;
+  top: 20rem;
+}
+</style>
 <style scoped lang="scss">
 .table {
   width: 100%;
@@ -316,12 +324,6 @@ export default {
 }
 .VerificationCode div:nth-child(2) {
   top: -0.625rem;
-}
-/* 加载样式 */
-.el-loading-spinner {
-  font-size: 12.5rem;
-  position: relative;
-  top: 20rem;
 }
 .el-loading-spinner .el-loading-text {
   font-size: 3rem;

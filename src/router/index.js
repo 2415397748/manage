@@ -5,14 +5,23 @@ import logIn from '../views/logIn.vue'
 
 Vue.use(VueRouter)
 
+//公用路由
 const routes = [
     {
         name: '登录',
         path: '/logIn',
         component: logIn,
     },
+    //路由重定向，函数中可以加判断方法
     {
-        name: '主页面',
+        name: 'any',
+        path: '*',
+        redirect: (to) => {
+            return { path: '/logIn' }
+        },
+    },
+    {
+        name: '首页',
         path: '/index',
         redirect: (to) => {
             return { path: '/index/summarizationData' }
@@ -87,15 +96,6 @@ const routes = [
                 // },
             },
         ],
-    },
-
-    //路由重定向，函数中可以加判断方法
-    {
-        name: 'any',
-        path: '*',
-        redirect: (to) => {
-            return { path: '/logIn' }
-        },
     },
 ]
 

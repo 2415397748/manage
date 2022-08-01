@@ -76,9 +76,11 @@ export default {
 .navigation {
   color: #409eff;
 }
-.dbdaohang .el-button {
-  font-size: 20px;
-  padding: 0 10px;
+.dbdaohang {
+  .el-button {
+    font-size: 20px;
+    padding: 0 10px;
+  }
 }
 
 .toubu {

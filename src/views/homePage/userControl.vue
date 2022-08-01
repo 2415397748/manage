@@ -606,27 +606,32 @@ export default {
 }
 </script>
 
-<style lang="sass" scoped>
-.searchInput
-    width: 20%
-    margin: 0 2rem
+<style lang="scss" scoped>
+.searchInput {
+  width: 20%;
+  margin: 0 2rem;
+}
 
-.search
-    position: absolute
-    // 简单计算像素calc
-    right: calc(80% - 2rem)
+.search {
+  position: absolute;
+  // 简单计算像素calc
+  right: calc(80% - 2rem);
+}
 
-tr
-    color: #000000
+tr {
+  color: #000000;
+}
 
-.el-table th
-    font-size: 1rem
-    color: #409eff
+.el-table th {
+  font-size: 1rem;
+  color: #409eff;
+}
 
 // 设置取消按钮向右浮动,左margin为10px,即与确定按钮间距为10px
-.btn-custom-cancel
-    float: right
-    margin-left: 10px
+.btn-custom-cancel {
+  float: right;
+  margin-left: 10px;
+}
 
 // .el-table th i
 //     background-color: #000000

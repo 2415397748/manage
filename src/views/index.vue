@@ -15,7 +15,21 @@
           </head-navigation>
         </el-header>
         <!-- 页面主要内容 -->
-        <router-view></router-view>
+        <div class="navigation">
+          <!-- 路由导航 -->
+          <el-tabs v-model="routeEditableTabsValue"
+                   type="card"
+                   closable
+                   @tab-remove="removeTab">
+            <el-tab-pane v-for="(item, index) in routeNavigation"
+                         :key="index"
+                         :label="item.name"
+                         :name="item.title">
+            </el-tab-pane>
+          </el-tabs>
+          <!-- 页面主要内容 -->
+          <router-view></router-view>
+        </div>
       </el-container>
     </el-container>
   </div>
@@ -25,11 +39,6 @@
 export default {
   name: 'index',
   data() {
-    // const item = {
-    //   date: '2016-05-02',
-    //   name: '王小虎',
-    //   address: '上海市普陀区金沙江路 1518 弄'
-    // };
     return {
       head: {
         list: [
@@ -57,30 +66,64 @@ export default {
         exitSwitch: true,
         value: 'leftNavigation1',
       },
+      routeEditableTabsValue: '1',
+      tabIndex: 2,
     }
   },
   created() {},
   methods: {
+    //上方导航栏点击事件
     skip(val) {
       this.head.value = val
+    },
+    onEdit(targetKey, action) {
+      this[action](targetKey)
+    },
+    removeTab(targetName) {
+      console.log(targetName)
+      //   let tabs = this.editableTabs
+      //   let activeName = this.routeEditableTabsValue
+      //   if (activeName === targetName) {
+      //     tabs.forEach((tab, index) => {
+      //       if (tab.name === targetName) {
+      //         let nextTab = tabs[index + 1] || tabs[index - 1]
+      //         if (nextTab) {
+      //           activeName = nextTab.name
+      //         }
+      //       }
+      //     })
+      //   }
+      //   this.routeEditableTabsValue = activeName
+      //   this.routeEditableTabs = tabs.filter((tab) => tab.name !== targetName)
+    },
+  },
+  computed: {
+    routeNavigation() {
+      return this.$store.state.routeNavigation
     },
   },
 }
 </script>
+<style lang="scss" scoped>
+body {
+  min-width: 800px;
+  overflow-y: hidden;
+  overflow-x: auto;
+}
 
-<style lang="sass" scoped>
-body
-    min-width: 800px
-    overflow-y: hidden
-    overflow-x: auto
+.home {
+  // 这是由 CSS2.1 规定的宽度高度行为。宽度和高度分别应用到元素的内容框。在宽度和高度之外绘制元素的内边距和边框。怪异盒子
+  width: 100%;
+  height: 100%;
+}
 
-.home
-    // 这是由 CSS2.1 规定的宽度高度行为。宽度和高度分别应用到元素的内容框。在宽度和高度之外绘制元素的内边距和边框。怪异盒子
-    width: 100%
-    height: 100%
+.el-main {
+  padding: 0;
+  padding-top: 0.625rem;
+}
 
-.el-main
-    padding: 0
-    padding-top: 0.625rem
-</style>>
+.navigation {
+  text-align: left;
+}
+</style>
 

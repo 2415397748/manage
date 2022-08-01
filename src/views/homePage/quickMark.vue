@@ -29,7 +29,8 @@
         <a-input placeholder="请输入店铺描述" />
       </a-form-item>
       <a-divider />
-      <a-form-item :label-col="formItemLayout.labelCol"
+      <a-form-item label="二维码"
+                   :label-col="formItemLayout.labelCol"
                    :wrapper-col="formItemLayout.wrapperCol">
         <a-upload action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
                   list-type="picture-card"

@@ -628,7 +628,8 @@ export default {
   switch() {},
 }
 </script>
-<style scoped lang="sass">
-*
-    // position: relative
+<style scoped lang="scss">
+* {
+  // position: relative
+}
 </style>

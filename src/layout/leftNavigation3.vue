@@ -38,7 +38,8 @@ export default {
 }
 </script>
 
-<style lang="sass" scoped>
-.el-aside
-    background-color: #333
+<style lang="scss" scoped>
+.el-aside {
+  background-color: #333;
+}
 </style>

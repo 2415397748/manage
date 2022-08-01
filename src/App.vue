@@ -9,11 +9,13 @@
     <!-- 锁屏 -->
     <el-dialog title="设置锁屏密码"
                :visible.sync="centerDialogVisible"
+               :close-on-click-modal="false"
                width="30%"
                center
-               :before-close="handleClose">
+               :before-close="() => openHandleClose('password','centerDialogVisible')">
       <el-input v-model="password"
-                placeholder=""></el-input>
+                clearable
+                placeholder="请输入锁屏密码"></el-input>
       <span slot="footer"
             class="dialog-footer">
         <el-button @click="centerDialogVisible = false">取 消</el-button>
@@ -24,11 +26,13 @@
     <!-- 解锁 -->
     <el-dialog title="请输入锁屏密码"
                :visible.sync="centerDialogVisible1"
+               :close-on-click-modal="false"
                width="30%"
                center
-               :before-close="handleClose1">
+               :before-close="() => openHandleClose('password1','centerDialogVisible1')">
       <el-input v-model="password1"
-                placeholder=""></el-input>
+                clearable
+                placeholder="请输入开锁密码"></el-input>
       <span slot="footer"
             class="dialog-footer">
         <el-button @click="centerDialogVisible1 = false">取 消</el-button>
@@ -107,53 +111,51 @@ export default {
         _this.timeFormate(new Date()) // 修改数据date
       }, 1000)
     },
-    handleClose(done) {
-      this.$confirm('确定要提交吗？')
-        .then((_) => {
-          if (this.password.length > 3 && this.password) {
-            this.timerSwitch = true
-            this.centerDialogVisible = false
-            this.showDate()
-            done()
-          } else {
-            this.$message({
-              message: '密码长度要大于3',
-              type: 'warning',
-              duration: 1000,
-              showClose: true,
-              center: true,
-            })
-          }
+    //打开锁屏解锁的输入框，根据传入的值判断直接修改锁屏或者关闭锁屏的状态以及输入框的值
+    openHandleClose(password, centerDialogVisible) {
+      this[centerDialogVisible] = false
+      this[password] = ''
+    },
+    //锁屏判断
+    handleClose() {
+      if (this.password.length > 3 && this.password) {
+        this.timerSwitch = true
+        this.centerDialogVisible = false
+        this.showDate()
+      } else {
+        this.$message({
+          message: '密码长度要大于3',
+          type: 'warning',
+          duration: 1000,
+          showClose: true,
+          center: true,
         })
-        .catch((_) => {})
+      }
     },
     //关闭锁屏并且关闭定时器
     unlocking() {
       this.password1 = ''
       this.centerDialogVisible1 = true
     },
-    handleClose1(done) {
-      this.$confirm('确定要提交吗？')
-        .then((_) => {
-          if (this.password1 == this.password) {
-            //   this.$store.dispatch('timerOut')
-            this.centerDialogVisible1 = false
-            this.timerSwitch = false
-            clearInterval(this.timer)
-            this.timer = null
-            done()
-          } else {
-            this.$message({
-              message: '密码错误',
-              type: 'warning',
-              duration: 1000,
-              showClose: true,
-              center: true,
-            })
-          }
+    //关闭锁屏事件
+    handleClose1() {
+      if (this.password1 == this.password) {
+        //   this.$store.dispatch('timerOut')
+        this.centerDialogVisible1 = false
+        this.timerSwitch = false
+        clearInterval(this.timer)
+        this.timer = null
+      } else {
+        this.$message({
+          message: '密码错误',
+          type: 'warning',
+          duration: 1000,
+          showClose: true,
+          center: true,
         })
-        .catch((_) => {})
+      }
     },
+    //忘记密码的提示
     prompt() {
       this.$message({
         message: '密码为' + this.password,
@@ -168,14 +170,15 @@ export default {
     clearInterval(this.timer)
   },
   computed: {
-    switchs() {
-      return this.$store.state.timerSwitch
-    },
+    //通过修改store.state的值修改锁屏状态
+    // switchs() {
+    //   return this.$store.state.timerSwitch
+    // },
   },
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 html,
 body {
   width: 100%;
