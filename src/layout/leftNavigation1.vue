@@ -32,6 +32,7 @@ export default {
     return {
       defaultActive: '用户管理',
       value: '',
+      routerKey: 0,
     }
   },
   created() {
@@ -52,13 +53,15 @@ export default {
     },
     //点击菜单路由替换,然后生成路由导航
     async menuClick(index) {
-      this.$router.push(index).then(() => {
-        const router = {
-          title: this.$route.path,
-          name: this.$route.name,
-        }
-        this.$store.dispatch('routeNavigationAdd', router)
-      })
+      await this.$router.push(index)
+      //生成路由导航对象
+      const router = {
+        title: this.$route.path,
+        name: this.$route.name,
+        key: ++this.routerKey,
+      }
+      //添加路由导航
+      this.$store.dispatch('routeNavigationAdd', router)
     },
   },
 }

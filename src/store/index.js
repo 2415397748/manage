@@ -48,9 +48,9 @@ export default new Vuex.Store({
 			)
 			if (!val) state.routeNavigation.push(router)
 		},
-		routeNavigationRemoves: (state, router) => {
-			//添加路由导航
-			state.routeNavigation.push(router.name)
+		routeNavigationRemoves: (state, index) => {
+			//删除路由导航
+			state.routeNavigation.splice(index, 1)
 		},
 	},
 	//和mutation的功能大致相同，不同之处在于 ==》
@@ -77,8 +77,8 @@ export default new Vuex.Store({
 		routeNavigationAdd: (context, router) => {
 			context.commit('routeNavigationAdds', router)
 		},
-		routeNavigationRemove: (context, router) => {
-			context.commit('routeNavigationAdds', router)
+		routeNavigationRemove: (context, index) => {
+			context.commit('routeNavigationRemoves', index)
 		},
 	},
 	modules: {},

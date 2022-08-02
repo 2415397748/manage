@@ -20,9 +20,10 @@
           <el-tabs v-model="routeEditableTabsValue"
                    type="card"
                    closable
+                   @tab-click="tabClick"
                    @tab-remove="removeTab">
-            <el-tab-pane v-for="(item, index) in routeNavigation"
-                         :key="index"
+            <el-tab-pane v-for="(item) in routeNavigation"
+                         :key="item.key"
                          :label="item.name"
                          :name="item.title">
             </el-tab-pane>
@@ -72,29 +73,19 @@ export default {
   },
   created() {},
   methods: {
-    //上方导航栏点击事件
+    //上方导航栏点击事件,切换左侧对应路由
     skip(val) {
       this.head.value = val
     },
-    onEdit(targetKey, action) {
-      this[action](targetKey)
+    //点击路由导航跳转对应路由
+    tabClick(tab) {
+      this.$router.push(tab.name)
     },
+    //获取对应下标并删除对应路由导航
     removeTab(targetName) {
-      console.log(targetName)
-      //   let tabs = this.editableTabs
-      //   let activeName = this.routeEditableTabsValue
-      //   if (activeName === targetName) {
-      //     tabs.forEach((tab, index) => {
-      //       if (tab.name === targetName) {
-      //         let nextTab = tabs[index + 1] || tabs[index - 1]
-      //         if (nextTab) {
-      //           activeName = nextTab.name
-      //         }
-      //       }
-      //     })
-      //   }
-      //   this.routeEditableTabsValue = activeName
-      //   this.routeEditableTabs = tabs.filter((tab) => tab.name !== targetName)
+      let tabs = this.routeNavigation
+      const index = tabs.findIndex((tab) => tab.title == targetName)
+      this.$store.dispatch('routeNavigationRemove', index)
     },
   },
   computed: {
