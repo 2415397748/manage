@@ -15,7 +15,7 @@
 				<div class="navigation">
 					<!-- 路由导航 -->
 					<el-tabs
-						v-model="routeEditableTabsValue"
+						:value="routePath"
 						type="card"
 						closable
 						@tab-click="tabClick"
@@ -67,7 +67,6 @@ export default {
 				exitSwitch: true,
 				value: 'leftNavigation1',
 			},
-			routeEditableTabsValue: '1',
 		};
 	},
 	created() {},
@@ -81,15 +80,27 @@ export default {
 			this.$router.push(tab.name);
 		},
 		//获取对应下标并删除对应路由导航
-		removeTab(targetName) {
-			let tabs = this.routeNavigation;
-			const index = tabs.findIndex((tab) => tab.title == targetName);
-			this.$store.dispatch('routeNavigationRemove', index);
+		async removeTab(targetName) {
+			const routeTabs = this.routeNavigation;
+			const index = routeTabs.findIndex((tab) => tab.title == targetName);
+			await this.$store.dispatch('routeNavigationRemove', index);
+			//删除当前路由默认跳转下一个路由，没有下一个跳转上一个路由
+			if (
+				(routeTabs[index + 1]?.title || routeTabs[index - 1]?.title) &&
+				this.$route.path === targetName
+			)
+				this.$router.push({
+					path: routeTabs[index]?.title || routeTabs[index - 1].title,
+				});
 		},
 	},
 	computed: {
 		routeNavigation() {
 			return this.$store.state.routeNavigation;
+		},
+		routePath() {
+			this.routeTabsValue = this.$route.path;
+			return this.$route.path;
 		},
 	},
 };

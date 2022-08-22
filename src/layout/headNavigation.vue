@@ -75,17 +75,13 @@ export default {
 		//头部选择
 		handleSelect(index) {
 			this.pashIndex = index;
-			//兄弟组件传值
-			// this.$bus.$emit('select',this.pashindex);
 			//给父亲组件传值并传入调用方法
 			this.$emit('selects', this.pashIndex);
 		},
-		//锁屏
+		//锁屏密码输入
 		lockScreen() {
-			//组件传值方式开启关闭锁屏
+			//组件传值方式开启app.vue的锁屏密码输入
 			this.$bus.$emit('lockScreen');
-			//改变store中的属性开启关闭锁屏
-			// this.$store.dispatch('timerIn');
 		},
 	},
 };

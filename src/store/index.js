@@ -2,21 +2,30 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 
 Vue.use(Vuex);
+const storage = window.sessionStorage;
 
 export default new Vuex.Store({
 	//state：相当于Vue的data
 	//state：vuex的基本数据，用来存储变量
 	state: {
-		// 登录token
-		token: window.sessionStorage.getItem('token')
-			? JSON.parse(window.sessionStorage.getItem('token'))
+		// token: '',
+		// timerSwitch: false,
+		// routeNavigation: [],
+		token: storage.getItem('token')
+			? JSON.parse(storage.getItem('token'))
 			: '',
-		timerSwitch: window.sessionStorage.getItem('timerSwitch')
-			? JSON.parse(window.sessionStorage.getItem('timerSwitch'))
-			: false,
-		routeNavigation: window.sessionStorage.getItem('router')
-			? JSON.parse(window.sessionStorage.getItem('router'))
+		routeNavigation: storage.getItem('router')
+			? JSON.parse(storage.getItem('router'))
 			: [],
+		routerKey: storage.getItem('routerKey')
+			? JSON.parse(storage.getItem('routerKey'))
+			: 0,
+		timerSwitch: storage.getItem('timerSwitch')
+			? JSON.parse(storage.getItem('timerSwitch'))
+			: false,
+		timerPassword: storage.getItem('timerPassword')
+			? JSON.parse(storage.getItem('timerPassword'))
+			: '',
 	},
 	//getters:可以认为是 store 的计算属性，就像计算属性一样，getter 的返回值会根据它的依赖被缓存起来，
 	//且只有当它的依赖值发生了改变才会被重新计算，接受 state 作为其第一个参数
@@ -27,49 +36,50 @@ export default new Vuex.Store({
 		//登录退出
 		logins: (state, token) => {
 			//传入登录状态token
-			window.sessionStorage.setItem('token', JSON.stringify(token));
+			storage.setItem('token', JSON.stringify(token));
 			state.token = token;
 		},
 		logouts: (state) => {
 			//清空登录状态token
-			window.sessionStorage.removeItem('token');
+			storage.removeItem('token');
 			state.token = '';
 		},
 
 		//锁屏以及解锁
 		timerIns: (state) => {
-			window.sessionStorage.removeItem(
-				'timerSwitch',
-				JSON.stringify(true)
-			);
 			state.timerSwitch = true;
+			storage.setItem('timerSwitch', JSON.stringify(true));
 		},
 		timerOuts: (state) => {
-			window.sessionStorage.removeItem(
-				'timerSwitch',
-				JSON.stringify(false)
-			);
 			state.timerSwitch = false;
+			storage.removeItem('timerSwitch', JSON.stringify(false));
 		},
 
 		//路由导航的添加以及删除
 		routeNavigationAdds: (state, router) => {
 			//添加路由导航
-			const val = state.routeNavigation.find(
+			//查询是否存在该路由
+			const index = state.routeNavigation.find(
 				(item) => item.title == router.title
 			);
-			if (!val) state.routeNavigation.push(router);
-			window.sessionStorage.setItem(
-				'router',
-				JSON.stringify(state.routeNavigation)
-			);
+			router.key = ++state.routerKey;
+			if (!index) {
+				state.routeNavigation.push(router);
+			}
+			storage.setItem('router', JSON.stringify(state.routeNavigation));
+			storage.setItem('routerKey', JSON.stringify(state.routerKey));
 		},
 		routeNavigationRemoves: (state, index) => {
 			//删除路由导航
 			state.routeNavigation.splice(index, 1);
-			window.sessionStorage.setItem(
-				'router',
-				JSON.stringify(state.routeNavigation)
+			storage.setItem('router', JSON.stringify(state.routeNavigation));
+		},
+		timerPasswords: (state, timerPassword) => {
+			//删除路由导航
+			state.timerPassword = timerPassword;
+			storage.setItem(
+				'timerPassword',
+				JSON.stringify(state.timerPassword)
 			);
 		},
 	},
@@ -86,19 +96,23 @@ export default new Vuex.Store({
 		},
 
 		//锁屏以及解锁
-		timerIn: (context) => {
-			context.commit('timerIns');
+		timerIn: ({ commit }) => {
+			commit('timerIns');
 		},
-		timerOut: (context) => {
-			context.commit('timerOuts');
+		timerOut: ({ commit }) => {
+			commit('timerOuts');
 		},
 
 		//路由导航的添加以及删除
-		routeNavigationAdd: (context, router) => {
-			context.commit('routeNavigationAdds', router);
+		routeNavigationAdd: ({ commit }, router) => {
+			commit('routeNavigationAdds', router);
 		},
-		routeNavigationRemove: (context, index) => {
-			context.commit('routeNavigationRemoves', index);
+		routeNavigationRemove: ({ commit }, index) => {
+			commit('routeNavigationRemoves', index);
+		},
+		//设置锁屏密码
+		timerPassword: ({ commit }, timerPassword) => {
+			commit('timerPasswords', timerPassword);
 		},
 	},
 	modules: {},

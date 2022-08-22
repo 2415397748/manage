@@ -2,7 +2,6 @@
 	<div
 		class="table"
 		v-loading="loading"
-		element-loading-text="loading"
 		element-loading-spinner="el-icon-loading"
 		element-loading-background="rgba(255, 255, 255, 1)"
 	>
@@ -212,15 +211,12 @@ export default {
 						});
 						//模拟登录加载
 						this.loading = true;
-						//dispatch：异步操作，写法： this.$store.dispatch(‘方法名’,传入的值)
 						this.$store.dispatch('login', this.form.account);
+						this.$router.push('/index/dataCollect');
 						setTimeout(() => {
 							//替换路由
 							this.$router.push('/index/dataCollect');
 						}, 200);
-						// this.$router.push({path: '/home'});
-						//let flag = true;
-						//this.$store.commit('login',flag);
 					} else {
 						this.$message({
 							message: '登录失败 没有账号可以先注册哦',
@@ -233,6 +229,7 @@ export default {
 					}
 				})
 				.catch((err) => {
+					console.error(err);
 					this.$message({
 						message: '登录失败',
 						type: 'warning',
@@ -278,6 +275,7 @@ export default {
 					}
 				})
 				.catch((err) => {
+					console.error(err);
 					this.$message({
 						message: '注册失败',
 						type: 'warning',

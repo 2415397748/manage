@@ -11,9 +11,7 @@
 			:close-on-click-modal="false"
 			width="30%"
 			center
-			:before-close="
-				() => openHandleClose('password', 'centerDialogVisible')
-			"
+			:before-close="openHandleClose"
 		>
 			<el-input
 				v-model="password"
@@ -25,32 +23,9 @@
 					>取 消</el-button
 				>
 				<el-button type="primary" @click="handleClose">确 定</el-button>
-			</span>
-		</el-dialog>
-		<!-- 解锁 -->
-		<el-dialog
-			title="请输入锁屏密码"
-			:visible.sync="centerDialogVisible1"
-			:close-on-click-modal="false"
-			width="30%"
-			center
-			:before-close="
-				() => openHandleClose('password1', 'centerDialogVisible1')
-			"
-		>
-			<el-input
-				v-model="password1"
-				clearable
-				placeholder="请输入开锁密码"
-			></el-input>
-			<span slot="footer" class="dialog-footer">
-				<el-button @click="centerDialogVisible1 = false"
-					>取 消</el-button
-				>
-				<el-button type="primary" @click="handleClose1"
-					>确 定</el-button
-				>
-				<el-button type="danger" @click="prompt">忘 记 密 码</el-button>
+				<el-button type="danger" @click="prompt" v-if="timerSwitch">
+					忘 记 密 码
+				</el-button>
 			</span>
 		</el-dialog>
 	</div>
@@ -61,20 +36,20 @@ export default {
 	data() {
 		return {
 			date: '',
-			timerSwitch: false,
 			timer: null,
 			centerDialogVisible: false,
-			centerDialogVisible1: false,
 			password: '',
-			password1: '',
+			lockPassword: '',
 		};
 	},
-	mounted() {
+	async created() {
 		//组件传值方式开启关闭锁屏
 		this.$bus.$on('lockScreen', () => {
-			this.password1 = '';
 			this.centerDialogVisible = true;
+			this.password = '';
 		});
+		//获取锁屏密码
+		this.lockPassword = this.timerPassword;
 	},
 	methods: {
 		timeFormate(timeStamp) {
@@ -123,53 +98,55 @@ export default {
 			}, 1000);
 		},
 		//打开锁屏解锁的输入框，根据传入的值判断直接修改锁屏或者关闭锁屏的状态以及输入框的值
-		openHandleClose(password, centerDialogVisible) {
-			this[centerDialogVisible] = false;
-			this[password] = '';
+		openHandleClose() {
+			this.centerDialogVisible = false;
 		},
 		//锁屏判断
-		handleClose() {
-			if (this.password.length > 3 && this.password) {
-				this.timerSwitch = true;
-				this.centerDialogVisible = false;
-				this.showDate();
+		async handleClose() {
+			//根据timerSwitch判断是锁屏还是解锁
+			if (!this.timerSwitch) {
+				if (this.password.length >= 3) {
+					//改变store中的属性开启关闭锁屏
+					this.lockPassword = this.password;
+					this.centerDialogVisible = false;
+					await this.$store.dispatch('timerIn');
+					await this.$store.dispatch(
+						'timerPassword',
+						this.lockPassword
+					);
+				} else {
+					this.$message({
+						message: '密码长度要大于3',
+						type: 'warning',
+						duration: 1000,
+						showClose: true,
+						center: true,
+					});
+				}
 			} else {
-				this.$message({
-					message: '密码长度要大于3',
-					type: 'warning',
-					duration: 1000,
-					showClose: true,
-					center: true,
-				});
+				if (this.lockPassword === this.password) {
+					this.centerDialogVisible = false;
+					await this.$store.dispatch('timerOut');
+				} else {
+					this.$message({
+						message: '密码错误',
+						type: 'warning',
+						duration: 1000,
+						showClose: true,
+						center: true,
+					});
+				}
 			}
 		},
-		//关闭锁屏并且关闭定时器
+		//关闭锁屏
 		unlocking() {
-			this.password1 = '';
-			this.centerDialogVisible1 = true;
-		},
-		//关闭锁屏事件
-		handleClose1() {
-			if (this.password1 == this.password) {
-				//   this.$store.dispatch('timerOut')
-				this.centerDialogVisible1 = false;
-				this.timerSwitch = false;
-				clearInterval(this.timer);
-				this.timer = null;
-			} else {
-				this.$message({
-					message: '密码错误',
-					type: 'warning',
-					duration: 1000,
-					showClose: true,
-					center: true,
-				});
-			}
+			this.password = '';
+			this.centerDialogVisible = true;
 		},
 		//忘记密码的提示
 		prompt() {
 			this.$message({
-				message: '密码为' + this.password,
+				message: '密码为' + this.lockPassword,
 				type: 'warning',
 				duration: 1000,
 				showClose: true,
@@ -181,10 +158,19 @@ export default {
 		clearInterval(this.timer);
 	},
 	computed: {
-		//通过修改store.state的值修改锁屏状态
-		// switchs() {
-		//   return this.$store.state.timerSwitch
-		// },
+		//通过修改store.state.timerSwitch的值修改锁屏状态
+		timerSwitch() {
+			if (this.$store.state.timerSwitch) this.showDate();
+			else this.timer = null;
+			return this.$store.state.timerSwitch;
+		},
+		timerPassword() {
+			return this.$store.state.timerPassword;
+		},
+	},
+	watch: {
+		// // 立即处理 进入页面就触发
+		// immediate: true,
 	},
 };
 </script>
