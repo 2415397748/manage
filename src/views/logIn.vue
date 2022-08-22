@@ -77,7 +77,6 @@
 			</el-form-item>
 			<el-form-item>
 				<h3>账号:admin&ensp;&ensp;密码:admin123</h3>
-				<h3>账号:admin&ensp;&ensp;密码:admin123</h3>
 			</el-form-item>
 		</el-form>
 	</div>
