@@ -6,7 +6,7 @@
 		</div>
 		<!-- 锁屏 -->
 		<el-dialog
-			title="设置锁屏密码"
+			:title="`设置${!timerSwitch ? '锁屏' : '解锁'}密码`"
 			:visible.sync="centerDialogVisible"
 			:close-on-click-modal="false"
 			width="30%"
@@ -16,7 +16,7 @@
 			<el-input
 				v-model="password"
 				clearable
-				placeholder="请输入锁屏密码"
+				:placeholder="`请输入${!timerSwitch ? '锁屏' : '解锁'}密码`"
 			></el-input>
 			<span slot="footer" class="dialog-footer">
 				<el-button @click="centerDialogVisible = false"
@@ -146,7 +146,7 @@ export default {
 		//忘记密码的提示
 		prompt() {
 			this.$message({
-				message: '密码为' + this.lockPassword,
+				message: '密码为: ' + this.lockPassword,
 				type: 'warning',
 				duration: 1000,
 				showClose: true,
