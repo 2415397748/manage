@@ -11,18 +11,12 @@ export default new Vuex.Store({
 		// token: '',
 		// timerSwitch: false,
 		// routeNavigation: [],
-		token: storage.getItem('token')
-			? JSON.parse(storage.getItem('token'))
-			: '',
+		token: storage.getItem('token') ?? '',
 		routeNavigation: storage.getItem('router')
 			? JSON.parse(storage.getItem('router'))
 			: [],
-		routerKey: storage.getItem('routerKey')
-			? JSON.parse(storage.getItem('routerKey'))
-			: 0,
-		timerSwitch: storage.getItem('timerSwitch')
-			? JSON.parse(storage.getItem('timerSwitch'))
-			: false,
+		routerKey: storage.getItem('routerKey') ?? 0,
+		timerSwitch: storage.getItem('timerSwitch') ?? false,
 		timerPassword: storage.getItem('timerPassword')
 			? JSON.parse(storage.getItem('timerPassword'))
 			: '',

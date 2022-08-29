@@ -120,17 +120,29 @@
 				width="250"
 				show-overflow
 			>
-				<template v-slot:default="{ row }">
-					<a-button icon="edit" type="primary" @click="editEvent(row)"
+				<template v-slot:default="row">
+					<a-button
+						icon="edit"
+						type="primary"
+						@click="editEvent(row.row)"
 						>编辑</a-button
 					>
-					<a-button
-						icon="rest"
+					<el-popconfirm
 						style="margin-left: 10px"
-						type="danger"
-						@click="deleteColumns(row)"
-						>删除</a-button
+						cancel-button-text="取消"
+						confirm-button-text="是的"
+						icon="el-icon-info"
+						title="确定删除这条信息吗？"
+						@confirm="deleteColumns(row.row, row.$rowIndex)"
 					>
+						<el-button
+							slot="reference"
+							size="mini"
+							type="danger"
+							icon="el-icon-delete"
+							>删除</el-button
+						>
+					</el-popconfirm>
 				</template>
 			</vxe-table-column>
 		</vxe-table>
@@ -144,15 +156,16 @@
 			:layouts="layouts"
 			:total="tableData.length"
 		>
-			<template v-slot:left @click="batchDelete()">
+			<template v-slot:left>
 				<vxe-button size="small">
 					<template #default>更多操作</template>
 					<template #dropdowns>
-						<vxe-button type="text" @click="batchDelete()"
-							>批量修改</vxe-button
-						>
-						<vxe-button type="text">批量管理</vxe-button>
-						<vxe-button type="text">批量删除</vxe-button>
+						<vxe-button type="text" @click="batchEdit()">
+							批量修改
+						</vxe-button>
+						<vxe-button type="text" @click="batchDelete()">
+							批量删除
+						</vxe-button>
 					</template>
 				</vxe-button>
 			</template>
@@ -166,8 +179,8 @@
 			:loading="submitLoading"
 			resize
 			lock-view
-			:esc-closable="true"
 			:show-zoom="true"
+			@close="modalClose"
 			destroy-on-close
 		>
 			<template v-slot>
@@ -177,7 +190,7 @@
 					:items="formItems"
 					title-align="right"
 					title-width="100"
-					@submit="submitEvent"
+					@submit="submitEvent(batch)"
 				>
 				</vxe-form>
 			</template>
@@ -570,6 +583,7 @@ export default {
 			searchData: '',
 			showEdit: false,
 			submitLoading: false,
+			batch: false,
 		};
 	},
 	methods: {
@@ -597,25 +611,30 @@ export default {
 			this.showEdit = true;
 		},
 		//编辑表单提交事件
-		submitEvent() {
+		submitEvent(batch) {
 			this.submitLoading = true;
-			setTimeout(() => {
-				this.submitLoading = false;
-				this.showEdit = false;
-				if (this.selectRow) {
-					Object.assign(this.selectRow, this.formData);
-					VXETable.modal.message({
-						message: '编辑成功',
-						status: 'success',
-					});
-				} else {
-					this.tableData.unshift(this.formData);
-					VXETable.modal.message({
-						message: '新增成功',
-						status: 'success',
-					});
-				}
-			}, 500);
+			this.submitLoading = false;
+			this.showEdit = false;
+			//批量编辑或者
+			if (batch) {
+				let list = this.$refs.xTable.getCheckboxRecords();
+				list.map((e) => Object.assign(e, this.formData));
+				VXETable.modal.message({
+					message: '批量编辑成功',
+					status: 'success',
+				});
+				this.batch = false;
+			} else {
+				const e = this.selectRow;
+				//通过selectRow判断是否是编辑
+				const type = e ? '编辑' : '新增';
+				if (e) Object.assign(e, this.formData);
+				else this.tableData.unshift(this.formData);
+				VXETable.modal.message({
+					message: type + '成功',
+					status: 'success',
+				});
+			}
 		},
 		//列表搜索
 		searchForm() {
@@ -626,12 +645,13 @@ export default {
 			this.searchData = '';
 		},
 		//删除表格列
-		deleteColumns(row) {
-			this.$XModal.message({
+		deleteColumns(row, index) {
+			this.$refs.xTable.remove(row);
+			this.tableData.splice(index, 1);
+			VXETable.modal.message({
 				message: '删除成功',
 				status: 'success',
 			});
-			this.$refs.xTable.remove(row);
 		},
 		//当前页改变时触发 跳转其他页
 		//每页条数改变时触发 选择一页显示多少行
@@ -639,9 +659,24 @@ export default {
 			this.pageSize = pageSize;
 			this.currentPage = currentPage;
 		},
+		//批量编辑
+		batchEdit() {
+			const list = this.$refs.xTable.getCheckboxRecords();
+			if (list.length) {
+				this.batch = true;
+				this.editEvent(list[0]);
+			} else console.error('未选中列');
+		},
 		//批量删除
 		batchDelete() {
-			let getCheckboxRecords = this.$refs.xTable.getCheckboxRecords();
+			const list = this.$refs.xTable.getCheckboxRecords();
+			if (list.length) {
+				this.$refs.xTable.removeCheckboxRow();
+			} else console.error('未选中列');
+		},
+		//手动关闭编辑弹窗
+		modalClose() {
+			this.batch = false;
 		},
 	},
 	computed: {
@@ -674,8 +709,4 @@ export default {
 	switch() {},
 };
 </script>
-<style scoped lang="scss">
-* {
-	// position: relative
-}
-</style>
+<style scoped lang="scss"></style>
