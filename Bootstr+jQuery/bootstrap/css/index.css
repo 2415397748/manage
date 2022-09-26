@@ -1,0 +1,318 @@
+a,
+a:hover,
+a:link,
+a:visited,
+a:active {
+	text-decoration: none !important;
+	color: black !important;
+}
+
+#dh,.navigation {}
+
+
+img {
+	display: inline-block;
+	max-width: 100%;
+	height: auto;
+}
+
+
+
+/* 页面响应式 */
+/* pc width > 1100px */
+html {
+	font-size: 100%;
+}
+
+body {
+	font-size: 1.5rem;
+}
+
+/* ipad pro */
+@media screen and (max-width: 1024px) {
+	body {
+		font-size: 1.4rem;
+	}
+}
+
+/* ipad */
+@media screen and (max-width: 768px) {
+	body {
+		font-size: 1.3rem;
+	}
+}
+
+/* iphone6 7 8 plus */
+@media screen and (max-width: 414px) {
+	body {
+		font-size: 1.25rem;
+	}
+}
+
+/* iphoneX */
+@media screen and (max-width: 375px) and (-webkit-device-pixel-ratio: 3) {
+	body {
+		font-size: 1.125rem;
+	}
+}
+
+/* iphone6 7 8 */
+@media screen and (max-width: 375px) and (-webkit-device-pixel-ratio: 2) {
+	body {
+		font-size: 1rem;
+	}
+}
+
+/* iphone5 */
+@media screen and (max-width: 320px) {
+	body {
+		font-size: 0.75rem;
+	}
+}
+
+
+
+/* 好看的按钮样式 */
+#go-top .button {
+	cursor: pointer;
+	position: relative;
+	font-size: 0;
+	width: 6.25rem;
+	height: 6.25rem;
+	text-align: center;
+	margin-right: 3.125rem;
+	border-radius: 3.125rem;
+	border: none;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, .4);
+	background: -webkit-linear-gradient(top, #fff, #d5dbe1);
+	background: -moz-linear-gradient(top, #fff, #d5dbe1);
+	background: -ms-linear-gradient(top, #fff, #d5dbe1);
+	background: -o-linear-gradient(top, #fff, #d5dbe1);
+	linear-gradient(top, #fff, #d5dbe1);
+	-webkit-transition: all .13s ease-out;
+	-moz-transition: all .13s ease-out;
+	-o-transition: all .13s ease-out;
+	transition: all .13s ease-out;
+	position: fixed;
+	bottom: 5.68rem;
+	right: 2.52rem;
+	box-shadow: 10px 10px 10px 5px rgba(255, 255, 255, 0.3);;
+}
+
+#go-top .button:after {
+	display: inline-block;
+	font-family: 'icomoon';
+	font-size: 1.5rem;
+	color: #bdc0c1;
+	content: attr(data-icon);
+	speak: none;
+	font-weight: normal;
+	-webkit-font-smoothing: antialiased;
+	width: 64px;
+	line-height: 64px;
+	margin: 10px;
+	border-radius: 32px;
+	border: 1px solid #efefef;
+	box-shadow: -1px 0 0 #dbdcdd, 1px 0 0 #dbdcdd, 0 1px 0 #d0d1d2, 0 0 8px #fff;
+	background: -webkit-linear-gradient(top left, #fcfcfc 50%, #dfe4e8);
+	transform:rotate(-90deg);
+	-ms-transform:rotate(-90deg); 	/* IE 9 */
+	-moz-transform:rotate(-90deg); 	/* Firefox */
+	-webkit-transform:rotate(-90deg); /* Safari 和 Chrome */
+	-o-transform:rotate(-90deg); 	/* Opera */
+	position: fixed;
+	bottom: 6.125rem;
+	right: 6.125rem;
+}
+
+
+#go-top .button:last-child:after {
+	content: "\27A4";
+}
+
+#go-top .button:hover:after {
+	color: #19a6e4;
+	box-shadow: 0 1px 3px #d7d8d9 inset;
+	background: -webkit-radial-gradient(#dbeef8, #f2f4f6 50%);
+}
+
+#go-top .button:active {
+	
+	box-shadow: 0 1px 3px #d7d8d9 inset;
+}
+
+@font-face {
+	font-family: 'icomoon';
+	url('fonts /icomoon.eot');
+	url('fonts /icomoon.eot?#iefix') format('embedded-opentype'),
+	url('fonts/icomoon.svg#icomoon') format('svg'),
+	url('fonts/icomoon.woff') format('woff'),
+	url('fonts/icomoon.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+
+body,html{
+	
+}
+
+span{
+	color: #000000;
+}
+
+#img{
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 163rem;
+	background: url(../../14.jpeg);
+	background-size:100% 100%; 
+	background-attachment:fixed;"
+	-webkit-background-size: cover;
+	-o-background-size: cover;
+	opacity: 0.8;
+	z-index: -1;
+}
+
+/* 顶部导航栏 */
+#dh {}
+
+#dh {
+	list-style-type: none;
+	display: flex;
+	justify-content: center;
+}
+
+#dh li {
+	display: inline;
+	line-height: 3.517562rem;
+}
+
+#dh li a {
+	display: inline-block;
+}
+
+#dropdownMenu1 {
+	/*消除button的默认样式*/
+	/*这种写法是对所有的button标签同时生效*/
+	margin: 0;
+	padding: 0;
+	/*消除默认点击蓝色边框效果*/
+	outline: none;
+}
+
+#dropdownMenu1 button {
+	color: black !important;
+	line-height: 1.625rem;
+	text-decoration: none;
+}
+
+/* 展开按钮 */
+.navigation {
+	height: 2.25rem;
+	line-height: 2.25rem;
+	font-size: 2.25rem;
+}
+
+.navigation span {
+	
+}
+
+.navigation div{
+	line-height: 2.5rem;
+}
+
+#dh1 {
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+#dh1,
+#dh1::before {
+	float: right;
+	line-height: 2.25rem;
+	margin: 0;
+	padding: 0;
+}
+
+.glyphicon div a{
+	
+}
+
+.carousel-inner {
+	pause: "data-pause"
+}
+
+/* 轮播图 */
+#myCarousel ol li {
+	width: 20px;
+	height: 20px;
+}
+
+
+.container{width: 95%;}
+/* 左侧导航 */
+ul.nav-pills {
+	background-color: #ccc;
+}
+
+div.col-sm-9 div {
+	height: 15.625rem;
+	font-size: 1.75rem;
+}
+
+#section1 {
+	color: #fff;
+	background-color: #1E88E5;
+}
+
+#section2 {
+	color: #fff;
+	background-color: #673ab7;
+}
+
+#section3 {
+	color: #fff;
+	background-color: #ff9800;
+}
+
+#section41 {
+	color: #fff;
+	background-color: #00bcd4;
+}
+
+#section42 {
+	color: #fff;
+	background-color: #009688;
+}
+
+@media screen and (max-width: 810px) {
+
+	#section1,
+	#section2,
+	#section3,
+	#section41,
+	#section42 {
+		margin-left: 150px;
+	}
+}
+
+.go-top {
+	width: 4.5625rem;
+	height: 4.5625rem;
+	font-size: 4.5625rem;
+	border-radius: 2.1875rem;
+}
+
+#phone{
+	width: 100%;
+	height: 5.8rem;
+	border-top:1px solid #000;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
