@@ -4,7 +4,7 @@
 		<div class="date" v-if="timerSwitch" @click="unlocking()">
 			{{ date }}
 		</div>
-		<!-- 锁屏 -->
+		<!-- 锁屏功能 -->
 		<el-dialog
 			:title="`设置${!timerSwitch ? '锁屏' : '解锁'}密码`"
 			:visible.sync="centerDialogVisible"
